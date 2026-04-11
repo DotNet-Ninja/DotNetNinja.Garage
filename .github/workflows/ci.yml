@@ -13,6 +13,11 @@ on:
 env:
   DOTNET_VERSION: '10.0.x'
   BUILD_CONFIGURATION: 'Release'
+
+permissions:
+  contents: read       # Required to checkout code
+  actions: read        # Required for workflow access
+  checks: write        # Required to write test results
   
 jobs:
   build-and-test:

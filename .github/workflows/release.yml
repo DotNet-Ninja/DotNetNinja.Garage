@@ -18,6 +18,10 @@ env:
   DOTNET_VERSION: '10.0.x'
   BUILD_CONFIGURATION: 'Release'
 
+permissions:
+  contents: write      # Required to create releases and upload assets
+  actions: read        # Required for workflow access
+
 jobs:
   release-build:
     runs-on: ubuntu-latest

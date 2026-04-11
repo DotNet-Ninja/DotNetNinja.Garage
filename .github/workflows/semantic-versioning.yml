@@ -7,6 +7,11 @@ on:
 env:
   DOTNET_VERSION: '10.0.x'
 
+permissions:
+  contents: write      # Required to create tags and releases
+  pull-requests: read  # Required to read merged PR labels
+  actions: read        # Required for workflow access
+
 jobs:
   version-and-tag:
     runs-on: ubuntu-latest
