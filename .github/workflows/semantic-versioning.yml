@@ -28,7 +28,7 @@ jobs:
         
     - name: Get merged PR labels
       id: pr-labels
-      uses: actions/github-script@v7
+      uses: actions/github-script@v9
       with:
         script: |
           const { data: prs } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
