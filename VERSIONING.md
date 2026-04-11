@@ -25,11 +25,6 @@ When creating a Pull Request, add **one** of these labels to indicate the type o
 
 **Examples:** Bug fixes, security patches, dependency updates
 
-### No Version Bump
-- `no-version-bump` - Changes that don't affect the application version
-
-**Examples:** Documentation updates, test changes, CI improvements
-
 ## 🔄 **How It Works**
 
 1. **Create PR** with appropriate label (`major`, `minor`, `patch`, etc.)
