@@ -6,6 +6,10 @@ on:
     branches: [ main ]
     paths: [ '.github/workflows/setup-labels.yml' ]
 
+permissions:
+  issues: write        # Required to create and manage labels
+  contents: read       # Required to checkout code
+
 jobs:
   setup-labels:
     runs-on: ubuntu-latest
