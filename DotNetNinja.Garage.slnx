@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/DotNetNinja.Garage/DotNetNinja.Garage.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/DotNetNinja.Garage.Tests/DotNetNinja.Garage.Tests.csproj" />
+  </Folder>
+</Solution>
