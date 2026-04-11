@@ -1,0 +1,88 @@
+name: Setup Repository Labels
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths: [ '.github/workflows/setup-labels.yml' ]
+
+jobs:
+  setup-labels:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Create semantic versioning labels
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const labels = [
+            {
+              name: 'major',
+              color: 'd73a4a',
+              description: '🚨 Breaking changes - bumps major version (x.0.0)'
+            },
+            {
+              name: 'minor',
+              color: '0075ca',
+              description: '✨ New features - bumps minor version (0.x.0)'
+            },
+            {
+              name: 'patch',
+              color: '7057ff',
+              description: '🐛 Bug fixes - bumps patch version (0.0.x)'
+            },
+            {
+              name: 'breaking',
+              color: 'd73a4a',
+              description: '💥 Breaking change (alias for major)'
+            },
+            {
+              name: 'feature',
+              color: '0075ca', 
+              description: '🚀 New feature (alias for minor)'
+            },
+            {
+              name: 'fix',
+              color: '7057ff',
+              description: '🔧 Bug fix (alias for patch)'
+            },
+            {
+              name: 'bugfix',
+              color: '7057ff',
+              description: '🐞 Bug fix (alias for patch)'
+            },
+            {
+              name: 'no-version-bump',
+              color: 'e4e669',
+              description: '📝 Documentation, tests, or other changes that don\'t affect versioning'
+            }
+          ];
+
+          for (const label of labels) {
+            try {
+              await github.rest.issues.createLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ...label
+              });
+              console.log(`✅ Created label: ${label.name}`);
+            } catch (error) {
+              if (error.status === 422) {
+                // Label already exists, update it
+                try {
+                  await github.rest.issues.updateLabel({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    name: label.name,
+                    color: label.color,
+                    description: label.description
+                  });
+                  console.log(`🔄 Updated label: ${label.name}`);
+                } catch (updateError) {
+                  console.log(`❌ Failed to update label ${label.name}:`, updateError.message);
+                }
+              } else {
+                console.log(`❌ Failed to create label ${label.name}:`, error.message);
+              }
+            }
+          }
