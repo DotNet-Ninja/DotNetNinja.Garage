@@ -2,6 +2,14 @@
 
 This repository uses automated semantic versioning based on PR labels. Here's how it works:
 
+## Application build versions
+
+Normal builds derive a semantic version from the latest reachable `vMAJOR.MINOR.PATCH` Git tag. A clean checkout at that tag uses the tag version exactly. Builds with commits or working-tree changes after the tag use the next patch as a development prerelease, for example `0.0.8-dev.0+build.20261030153000`. The UTC build timestamp changes on each build without modifying source files or creating tags.
+
+The .NET SDK stamps the numeric portion into `AssemblyVersion` and `FileVersion`, and the complete semantic version into `AssemblyInformationalVersion`. The About page reads the latter from the running assembly. Git and PowerShell 7 (`pwsh`) are required for ordinary builds. An explicit `-p:Version=1.2.3` overrides the derived version, as the release workflows already do.
+
+Only a release tag establishes a new stable version. Building locally does not publish a release or advance a tag.
+
 ## 🏷️ **PR Labels for Version Bumping**
 
 When creating a Pull Request, add **one** of these labels to indicate the type of change:

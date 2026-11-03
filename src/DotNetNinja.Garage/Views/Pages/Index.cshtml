@@ -1,0 +1,52 @@
+@model PageViewModel
+@{
+    ViewData[ViewKey.Title] = Model.Title;
+    ViewData[ViewKey.FullBleed] = true;
+}
+
+<section class="home-hero pages-content" aria-labelledby="page-title">
+    <h1 id="page-title" class="home-eyebrow page-title"><span aria-hidden="true"></span> @Model.Title</h1>
+
+    @if (Model.Groups.Count == 0)
+    {
+        <p class="text-secondary">This page has no groups yet.</p>
+    }
+    else
+    {
+        <div class="pages-grid">
+            @foreach (var group in Model.Groups)
+            {
+                <section class="page-group" aria-label="@group.Title">
+                    <h2>@group.Title</h2>
+                    @if (group.Links.Count == 0)
+                    {
+                        <p class="page-group-empty">No links yet.</p>
+                    }
+                    else
+                    {
+                        <ul class="page-links">
+                            @foreach (var link in group.Links)
+                            {
+                                <li>
+                                    <a href="@link.Href" target="@(link.OpenInNewTab ? "_blank" : null)" rel="@(link.OpenInNewTab ? "noopener noreferrer" : null)">
+                                        <span class="page-link-icon" aria-hidden="true" style="color: @link.IconColor">
+                                            @if (link.Icon == Icons.None)
+                                            {
+                                                <i class="bi bi-link-45deg"></i>
+                                            }
+                                            else
+                                            {
+                                                <icon key="@link.Icon"></icon>
+                                            }
+                                        </span>
+                                        <span>@link.Title</span>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </section>
+            }
+        </div>
+    }
+</section>

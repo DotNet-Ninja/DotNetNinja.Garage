@@ -1,0 +1,39 @@
+@model DatabaseViewModel
+@{
+    ViewData[ViewKey.Title] = "Database";
+    ViewData[ViewKey.FullBleed] = true;
+}
+
+<section class="home-hero about-hero" aria-labelledby="database-title">
+    <div class="about-card database-card">
+        <p class="home-eyebrow"><span aria-hidden="true"></span> Database management</p>
+        <h1 id="database-title">Database</h1>
+        <p class="about-description">Migration status for the Garage database.</p>
+
+        <div class="about-version">
+            <span>Status</span>
+            <strong>@(Model.HasPendingMigrations ? "Pending changes" : "Up to Date")</strong>
+        </div>
+
+        @if (Model.HasPendingMigrations)
+        {
+            <div class="database-pending">
+                <h2>Pending migrations</h2>
+                <ul>
+                    @foreach (var migration in Model.PendingMigrations)
+                    {
+                        <li><code>@migration</code></li>
+                    }
+                </ul>
+                <form asp-controller="Account" asp-action="ApplyMigrations" method="post">
+                    @Html.AntiForgeryToken()
+                    <button class="btn btn-primary" type="submit">Apply migrations</button>
+                </form>
+            </div>
+        }
+        else
+        {
+            <p class="database-current">All migrations have been applied. There is nothing to do.</p>
+        }
+    </div>
+</section>

@@ -1,0 +1,18 @@
+@model IReadOnlyList<DotNetNinja.Garage.Data.NavigationLink>
+
+<button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#siteNavigation"
+        aria-controls="siteNavigation" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse justify-content-start" id="siteNavigation">
+    <ul class="navbar-nav align-items-md-center gap-md-3">
+        @foreach (var link in Model)
+        {
+            var isCurrent = string.Equals(Context.Request.Path.Value?.Trim('/'), link.Slug, StringComparison.OrdinalIgnoreCase);
+            <li class="nav-item">
+                <a class="nav-link @(isCurrent ? "active" : "")" aria-current="@(isCurrent ? "page" : null)"
+                   asp-route="page" asp-route-slug="@link.Slug">@link.Text</a>
+            </li>
+        }
+    </ul>
+</div>

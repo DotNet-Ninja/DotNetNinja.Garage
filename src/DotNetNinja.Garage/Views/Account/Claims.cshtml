@@ -1,0 +1,29 @@
+@model AccountClaimsViewModel
+@{
+    ViewData[ViewKey.Title] = "Account Claims";
+}
+
+<section aria-labelledby="claims-title">
+    <p class="home-eyebrow"><span aria-hidden="true"></span> Account diagnostics</p>
+    <h1 id="claims-title">Your claims</h1>
+    <p class="text-secondary">These claims belong to your current signed-in session.</p>
+
+    <div class="table-responsive mt-4">
+        <table class="table table-dark table-striped table-bordered align-middle">
+            <caption class="visually-hidden">All claims in the current signed-in session</caption>
+            <thead>
+                <tr><th scope="col">Type</th><th scope="col">Value</th><th scope="col">Issuer</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var claim in Model.Claims)
+                {
+                    <tr>
+                        <td class="text-break">@claim.Type</td>
+                        <td class="text-break">@claim.Value</td>
+                        <td class="text-break">@claim.Issuer</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

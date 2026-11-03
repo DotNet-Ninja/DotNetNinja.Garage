@@ -1,0 +1,13 @@
+﻿<nav aria-label="Footer navigation">
+    <ul class="nav justify-content-start justify-content-md-end gap-3">
+        <li class="nav-item">
+            <a class="nav-link footer-link p-0" asp-controller="Home" asp-action="About">About</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link footer-link p-0" is-authenticated="false" asp-controller="Account" asp-action="Login">Log In</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link footer-link p-0" is-authenticated="true" asp-controller="Account" asp-action="MyAccount">My Account</a>
+        </li>
+    </ul>
+</nav>
