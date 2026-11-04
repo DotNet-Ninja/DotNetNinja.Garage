@@ -15,9 +15,7 @@ env:
   BUILD_CONFIGURATION: 'Release'
 
 permissions:
-  contents: read       # Required to checkout code
-  actions: read        # Required for workflow access
-  checks: write        # Required to write test results
+  contents: read
   
 jobs:
   build-and-test:
@@ -41,27 +39,20 @@ jobs:
           ${{ runner.os }}-nuget-
           
     - name: Restore dependencies
-      run: dotnet restore DotNetNinja.Garage.slnx
+      run: dotnet restore tests/DotNetNinja.Garage.Tests/DotNetNinja.Garage.Tests.csproj
       
     - name: Build solution
       run: |
         if [ -n "${{ inputs.version }}" ]; then
-          dotnet build DotNetNinja.Garage.slnx \
+          dotnet build tests/DotNetNinja.Garage.Tests/DotNetNinja.Garage.Tests.csproj \
             --configuration ${{ env.BUILD_CONFIGURATION }} \
             --no-restore \
             -p:Version=${{ inputs.version }} \
             -p:AssemblyVersion=${{ inputs.version }} \
             -p:FileVersion=${{ inputs.version }}
         else
-          dotnet build DotNetNinja.Garage.slnx --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
+          dotnet build tests/DotNetNinja.Garage.Tests/DotNetNinja.Garage.Tests.csproj --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
         fi
       
-    - name: Run tests
-      run: dotnet test DotNetNinja.Garage.slnx --configuration ${{ env.BUILD_CONFIGURATION }} --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
-      
-    - name: Upload test results
-      uses: actions/upload-artifact@v7
-      if: always()
-      with:
-        name: test-results-${{ github.run_number }}
-        path: ./coverage/**/*.xml
+    - name: Run xUnit tests
+      run: dotnet run --project tests/DotNetNinja.Garage.Tests/DotNetNinja.Garage.Tests.csproj --configuration ${{ env.BUILD_CONFIGURATION }} --no-build --no-restore

@@ -21,4 +21,6 @@ public class LinkItem
     public string Text { get; set; } = string.Empty;
 
     public int SortIndex { get; set; }
+
+    public int Revision { get; set; }
 }

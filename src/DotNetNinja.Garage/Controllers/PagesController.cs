@@ -16,14 +16,19 @@ public class PagesController : MvcController<PagesController>
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index(string? slug)
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public async Task<IActionResult> Index(string? slug, string? edit = null)
     {
         if (!string.IsNullOrWhiteSpace(slug))
         {
             var page = await _pageManager.GetUserPageBySlugAsync(User, slug);
             if (page is not null)
             {
-                return View(PageViewModel.FromPage(page));
+                var navigation = await _pageManager.GetUserNavigationLinks(User);
+                return View(PageViewModel.FromPage(page, edit is "1" or "true") with
+                {
+                    CanDelete = navigation.Count > 1
+                });
             }
         }
 

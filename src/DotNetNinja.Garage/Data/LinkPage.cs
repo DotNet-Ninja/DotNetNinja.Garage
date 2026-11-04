@@ -14,5 +14,7 @@ public class LinkPage
 
     public int SortIndex { get; set; } = 0;
 
+    public int Revision { get; set; }
+
     public ICollection<LinkGroup> Groups { get; set; } = new List<LinkGroup>();
 }

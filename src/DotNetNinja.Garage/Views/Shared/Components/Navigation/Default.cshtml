@@ -9,9 +9,11 @@
         @foreach (var link in Model)
         {
             var isCurrent = string.Equals(Context.Request.Path.Value?.Trim('/'), link.Slug, StringComparison.OrdinalIgnoreCase);
+            var isEditing = Context.Request.Query["edit"] == "1"
+                || Context.Request.Path.Value?.StartsWith("/PageEdits/", StringComparison.OrdinalIgnoreCase) == true;
             <li class="nav-item">
                 <a class="nav-link @(isCurrent ? "active" : "")" aria-current="@(isCurrent ? "page" : null)"
-                   asp-route="page" asp-route-slug="@link.Slug">@link.Text</a>
+                   asp-route="page" asp-route-slug="@link.Slug" asp-route-edit="@(isEditing ? "1" : null)">@link.Text</a>
             </li>
         }
     </ul>

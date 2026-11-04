@@ -32,6 +32,10 @@ namespace DotNetNinja.Garage.Data.Migrations
                     b.Property<int>("LinkPageId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Revision")
+                        .IsConcurrencyToken()
+                        .HasColumnType("int");
+
                     b.Property<int>("SortIndex")
                         .HasColumnType("int");
 
@@ -45,7 +49,7 @@ namespace DotNetNinja.Garage.Data.Migrations
 
                     SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"));
 
-                    b.HasIndex("LinkPageId");
+                    b.HasIndex("LinkPageId", "SortIndex");
 
                     b.ToTable("Groups");
                 });
@@ -79,6 +83,10 @@ namespace DotNetNinja.Garage.Data.Migrations
                     b.Property<bool>("OpenInNewTab")
                         .HasColumnType("bit");
 
+                    b.Property<int>("Revision")
+                        .IsConcurrencyToken()
+                        .HasColumnType("int");
+
                     b.Property<int>("SortIndex")
                         .HasColumnType("int");
 
@@ -92,7 +100,7 @@ namespace DotNetNinja.Garage.Data.Migrations
 
                     SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"));
 
-                    b.HasIndex("LinkGroupId");
+                    b.HasIndex("LinkGroupId", "SortIndex");
 
                     b.ToTable("Items");
                 });
@@ -107,6 +115,10 @@ namespace DotNetNinja.Garage.Data.Migrations
 
                     b.Property<bool>("IsDefault")
                         .HasColumnType("bit");
+
+                    b.Property<int>("Revision")
+                        .IsConcurrencyToken()
+                        .HasColumnType("int");
 
                     b.Property<string>("Slug")
                         .IsRequired()
@@ -130,6 +142,11 @@ namespace DotNetNinja.Garage.Data.Migrations
                         .HasName("PK_LinkPage");
 
                     SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"));
+
+                    b.HasIndex("UserId", "Slug")
+                        .IsUnique();
+
+                    b.HasIndex("UserId", "SortIndex");
 
                     b.ToTable("Pages");
                 });

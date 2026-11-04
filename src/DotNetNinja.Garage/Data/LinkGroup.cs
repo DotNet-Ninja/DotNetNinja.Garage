@@ -12,5 +12,7 @@ public class LinkGroup
 
     public int SortIndex { get; set; }
 
+    public int Revision { get; set; }
+
     public ICollection<LinkItem> Links { get; set; } = new List<LinkItem>();
 }

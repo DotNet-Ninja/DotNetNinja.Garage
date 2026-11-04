@@ -13,6 +13,9 @@ public class LinkPageEntityTypeConfiguration: IEntityTypeConfiguration<LinkPage>
         builder.Property(e=>e.Slug).IsRequired().HasMaxLength(128);
         builder.Property(e=>e.Text).IsRequired().HasMaxLength(64);
         builder.Property(e=>e.SortIndex).IsRequired();
+        builder.Property(e=>e.Revision).IsConcurrencyToken().IsRequired();
+        builder.HasIndex(e => new { e.UserId, e.Slug }).IsUnique();
+        builder.HasIndex(e => new { e.UserId, e.SortIndex });
 
         builder.HasMany(e => e.Groups).WithOne(e => e.LinkPage).HasForeignKey(e => e.LinkPageId).OnDelete(DeleteBehavior.Cascade);
     }

@@ -12,6 +12,8 @@ public class LinkGroupEntityTypeConfiguration: IEntityTypeConfiguration<LinkGrou
         builder.Property(e => e.LinkPageId).IsRequired();
         builder.Property(e => e.Text).IsRequired().HasMaxLength(64);
         builder.Property(e => e.SortIndex).IsRequired();
+        builder.Property(e => e.Revision).IsConcurrencyToken().IsRequired();
+        builder.HasIndex(e => new { e.LinkPageId, e.SortIndex });
 
         builder.HasMany(e => e.Links).WithOne(e => e.LinkGroup).HasForeignKey(e => e.LinkGroupId).OnDelete(DeleteBehavior.Cascade);
     }

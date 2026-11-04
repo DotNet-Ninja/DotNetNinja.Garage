@@ -17,6 +17,7 @@ public static class StartUpExtensions
         services.AddDatabaseContext<GarageDbContext>(configuration.Databases);
         services.AddScoped<IMigrationsManager<GarageDbContext>, MigrationsManager<GarageDbContext>>();
         services.AddScoped<IPageManager, PageManager>();
+        services.AddScoped<IPageEditService, PageEditService>();
 
         return services;
     }

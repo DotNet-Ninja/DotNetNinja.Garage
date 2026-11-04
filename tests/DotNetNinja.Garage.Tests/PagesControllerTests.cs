@@ -28,6 +28,18 @@ public class PagesControllerTests
     }
 
     [Fact]
+    public async Task Edit_query_opens_edit_mode_on_the_current_page()
+    {
+        var manager = new Mock<IPageManager>();
+        manager.Setup(service => service.GetUserPageBySlugAsync(It.IsAny<ClaimsPrincipal>(), "start"))
+            .ReturnsAsync(new LinkPage { Slug = "start", Text = "Start" });
+
+        var result = await CreateController(manager.Object).Index("start", "1");
+
+        Assert.True(Assert.IsType<PageViewModel>(Assert.IsType<ViewResult>(result).Model).IsEditing);
+    }
+
+    [Fact]
     public async Task Unknown_slug_redirects_to_existing_default_page()
     {
         var manager = new Mock<IPageManager>();
@@ -61,6 +73,7 @@ public class PagesControllerTests
     {
         var mvcContext = new Mock<IMvcContext<PagesController>>();
         mvcContext.Setup(context => context.Logger).Returns(NullLogger<PagesController>.Instance);
+        Mock.Get(pageManager).Setup(service => service.GetUserNavigationLinks(It.IsAny<ClaimsPrincipal>())).ReturnsAsync([]);
         return new PagesController(mvcContext.Object, pageManager)
         {
             ControllerContext = new ControllerContext

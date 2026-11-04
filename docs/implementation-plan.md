@@ -30,7 +30,7 @@ Use stable GUIDs or another stable key type consistently. Add indexes for owner 
 ### 2. Persistence and first-run account
 
 - Add the EF Core context, entities, configuration, initial migration, and owner-scoped repository/query code.
-- On first successful sign-in, atomically create the user record and empty **My Garage** page. Do not create duplicate starter pages on later sign-ins.
+- On first successful sign-in, create the existing sample-filled **Start** page once for that user. Do not create duplicate starter pages on later sign-ins.
 - Document connection strings, local SQL setup, migration commands, and backup/rollback steps.
 
 ### 3. Read-only Garage view
@@ -39,6 +39,8 @@ Use stable GUIDs or another stable key type consistently. Add indexes for owner 
 - Add empty states for a new page, an empty group, and no search results. Confirm desktop and mobile layout and keyboard navigation.
 
 ### 4. Editing and ordering
+
+Use [edit-flow.md](edit-flow.md) as the detailed build specification for this slice, including editable slugs, same-page drag and drop between groups, and its keyboard equivalent.
 
 - Add validated create/edit forms for pages, groups, and links. Use anti-forgery tokens and Post/Redirect/Get after successful writes.
 - Add delete confirmations and transactional descendant deletion. Add move and reorder controls with stable, deterministic order values.

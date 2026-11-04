@@ -25,17 +25,19 @@ Garage is a private, browser-based start page. A signed-in person organizes usef
 
 ### First run and navigation
 
-- A new account starts with one empty page named **My Garage**. It contains no sample or imported links.
+- A new account starts with the existing sample-filled **Start** page. This is starter content created by Garage, not an import of the user's previous bookmarks.
 - The signed-in view shows the current page, its groups, and the links in each group. A page switcher lets the user move among their pages.
-- Remember the user's selected/default page on the server so it is consistent across browsers. If that page is removed, choose another available page; create **My Garage** if none remain.
+- Remember the user's selected/default page on the server so it is consistent across browsers. If that page is removed, choose another available page; create a new **Start** page if none remain.
 - Opening a link navigates to its saved HTTP(S) URL. The user can choose whether that link opens in a new tab; new-tab links use `rel="noopener noreferrer"`.
 - The existing dark racing theme carries into the authenticated shell. The page remains usable at desktop and phone widths, with keyboard navigation and visible focus states.
 
 ### Editing
 
+The detailed, current edit-mode proposal is in [edit-flow.md](edit-flow.md). It records the chosen drag-and-drop behavior and the differences between this original v1 outline and the current code.
+
 - Users can create, rename, reorder, and delete pages.
 - Within a page, users can create, rename, reorder, and delete groups.
-- Within a group, users can create, edit, reorder, move to another group, and delete links.
+- Within a group, users can create, edit, reorder, move to another group on the same page, and delete links.
 - Link fields: title, URL, optional description, and open-in-new-tab preference. A title and valid absolute HTTP(S) URL are required.
 - Reordering persists after refresh and across signed-in browsers. Provide keyboard-operable controls even if drag-and-drop is added.
 - Deleting a page or group clearly warns that its children will also be deleted. V1 deletion is permanent after confirmation; a Trash/recovery feature is a separate future decision.
@@ -66,7 +68,7 @@ Garage is a private, browser-based start page. A signed-in person organizes usef
 
 ## Acceptance criteria
 
-1. A new Auth0 user signs in and sees only an empty **My Garage** page.
+1. A new Auth0 user signs in and sees the sample-filled **Start** page.
 2. That user can create two pages, multiple groups, and links; edit and reorder them; refresh; and see the same result.
 3. A link opens the saved URL with the configured tab behavior. Invalid or non-HTTP(S) URLs are rejected with a field message.
 4. Search finds a link on another page and identifies its page and group.

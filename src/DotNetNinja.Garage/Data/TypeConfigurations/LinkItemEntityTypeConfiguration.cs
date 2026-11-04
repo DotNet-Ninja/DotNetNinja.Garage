@@ -18,5 +18,7 @@ public class LinkItemEntityTypeConfiguration: IEntityTypeConfiguration<LinkItem>
         builder.Property(e=>e.OpenInNewTab).IsRequired();
         builder.Property(e => e.Text).IsRequired().HasMaxLength(64);
         builder.Property(e => e.SortIndex).IsRequired();
+        builder.Property(e => e.Revision).IsConcurrencyToken().IsRequired();
+        builder.HasIndex(e => new { e.LinkGroupId, e.SortIndex });
     }
 }

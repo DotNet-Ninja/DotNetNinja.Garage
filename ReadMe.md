@@ -16,14 +16,20 @@ Garage uses Auth0 as a **Regular Web Application** with a server-side ASP.NET Co
 Enable the login connection you intend to use for this application. Run the application's **https** launch profile. Keep the Auth0 client secret out of `appsettings.json` and source control. Set the three values with .NET user secrets from the repository root:
 
 ```powershell
-dotnet user-secrets set "Auth0:Domain" "<your-tenant>.us.auth0.com" --project src/DotNetNinja.Garage
-dotnet user-secrets set "Auth0:ClientId" "<development-regular-web-app-client-id>" --project src/DotNetNinja.Garage
-dotnet user-secrets set "Auth0:ClientSecret" "<development-regular-web-app-client-secret>" --project src/DotNetNinja.Garage
+dotnet user-secrets set "Auth:Domain" "<your-tenant>.us.auth0.com" --project src/DotNetNinja.Garage
+dotnet user-secrets set "Auth:ClientId" "<development-regular-web-app-client-id>" --project src/DotNetNinja.Garage
+dotnet user-secrets set "Auth:ClientSecret" "<development-regular-web-app-client-secret>" --project src/DotNetNinja.Garage
 ```
 
-Use the exact Domain shown in Auth0 without `https://` or a trailing slash. The application fails at startup with a clear message when these values are missing. For deployment, supply the same keys through a secret store or environment variables (`Auth0__Domain`, `Auth0__ClientId`, and `Auth0__ClientSecret`) and register the deployed HTTPS callback and logout URLs in a separate production Auth0 application.
+Use the exact Domain shown in Auth0 without `https://` or a trailing slash. The application fails at startup with a clear message when these values are missing. For deployment, supply the same keys through a secret store or environment variables (`Auth__Domain`, `Auth__ClientId`, and `Auth__ClientSecret`) and register the deployed HTTPS callback and logout URLs in a separate production Auth0 application. See [deploy.md](deploy.md) for the Azure settings and pipeline.
 
-The home login button starts Auth0 sign-in. After login, `/Garage` is protected and currently shows a placeholder for the planned personal start page. The navigation includes a POST-based logout action.
+The home login button starts Auth0 sign-in. After login, Garage opens the user's private Start page. The navigation includes a POST-based logout action.
+
+## Editing pages, groups, and links
+
+Open a signed-in page and select **Edit page**. Each form saves one change; **Done** returns to the read view. Links can be dragged within or between groups on the current page. Keyboard users can use the move controls under each link. The edit flow is described in [docs/edit-flow.md](docs/edit-flow.md).
+
+Apply the `AddEditConcurrency` migration before using the editor. It adds revision columns and a unique index on each user's page slugs without deleting existing rows. The index will reject existing duplicate slugs for the same user; resolve those duplicates before applying it. Review the migration and confirm the configured database before running `dotnet ef database update` or using the Database management page. Roll back to `Initial` if the migration must be reverted; the rollback drops the revision columns and restores the previous indexes.
 
 ## Entity Framework Core migrations
 

@@ -13,7 +13,7 @@ public class AuthSettings
     {
         if (string.IsNullOrWhiteSpace(Domain) || string.IsNullOrWhiteSpace(ClientId) || string.IsNullOrWhiteSpace(ClientSecret))
         {
-            throw new InvalidOperationException("Auth0:Domain, Auth0:ClientId, and Auth0:ClientSecret must be configured. See the README for local setup.");
+            throw new InvalidOperationException("Auth:Domain, Auth:ClientId, and Auth:ClientSecret must be configured. See the README for local setup.");
         }
     }
 }
