@@ -332,6 +332,18 @@ body.is-dragging-link, body.is-dragging-link * { cursor: grabbing !important; us
 
 .navbar { min-height: 4.5rem; }
 .navbar .nav-link { color: var(--garage-muted); font-weight: 500; }
+.garage-page-navigation .nav-link { font-size: 1.2rem; }
+.garage-nav-separator { display: none; }
+@media (min-width: 768px) {
+  .navbar .garage-brand { margin-right: 1.5rem; }
+  .garage-nav-separator {
+    display: inline-block;
+    color: var(--garage-muted);
+    margin: 0 .3rem;
+    font-size: .8rem;
+  }
+  .garage-page-navigation .nav-item { display: flex; align-items: center; }
+}
 .navbar .nav-link:hover,
 .navbar .nav-link:focus { color: #fff; }
 .navbar-toggler { border-color: var(--garage-border); }
