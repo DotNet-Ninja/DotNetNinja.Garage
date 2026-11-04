@@ -1,120 +1,61 @@
-name: Release Build
+name: Manual release package
 
+# Rebuild an existing version for inspection. The main workflow owns tags,
+# GitHub releases, and Azure deployment.
 on:
-  release:
-    types: [published]
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to build (e.g., 1.2.3)'
+        description: 'Semantic version to package (for example, 1.2.3)'
         required: true
-        default: '1.0.0'
-      create_release:
-        description: 'Create GitHub release'
-        type: boolean
-        default: true
-
-env:
-  DOTNET_VERSION: '10.0.x'
-  BUILD_CONFIGURATION: 'Release'
+        type: string
 
 permissions:
-  contents: write      # Required to create releases and upload assets
-  actions: read        # Required for workflow access
+  contents: read
 
 jobs:
-  release-build:
+  package:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
-        
-    - name: Cache NuGet packages
-      uses: actions/cache@v5
-      with:
-        path: ~/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-        restore-keys: |
-          ${{ runner.os }}-nuget-
-          
-    - name: Restore dependencies
-      run: dotnet restore DotNetNinja.Garage.slnx
-      
-    - name: Build solution
-      run: |
-        VERSION="${{ github.event.release.tag_name || github.event.inputs.version }}"
-        # Remove 'v' prefix if present
-        VERSION=${VERSION#v}
-        
-        dotnet build DotNetNinja.Garage.slnx \
-          --configuration ${{ env.BUILD_CONFIGURATION }} \
-          --no-restore \
-          -p:Version=$VERSION \
-          -p:AssemblyVersion=$VERSION \
-          -p:FileVersion=$VERSION \
-          -p:InformationalVersion=$VERSION
-      
-    - name: Run tests
-      run: dotnet test DotNetNinja.Garage.slnx --configuration ${{ env.BUILD_CONFIGURATION }} --no-build --verbosity normal
-      
-    - name: Publish application
-      run: |
-        VERSION="${{ github.event.release.tag_name || github.event.inputs.version }}"
-        VERSION=${VERSION#v}
-        
-        dotnet publish src/DotNetNinja.Garage/DotNetNinja.Garage.csproj \
-          --configuration ${{ env.BUILD_CONFIGURATION }} \
-          --output ./publish \
-          --no-build \
-          --self-contained false \
-          -p:Version=$VERSION
-          
-    - name: Create deployment package
-      run: |
-        VERSION="${{ github.event.release.tag_name || github.event.inputs.version }}"
-        VERSION=${VERSION#v}
-        cd ./publish
-        tar -czf ../DotNetNinja.Garage-$VERSION.tar.gz *
-        cd ..
-        
-    - name: Upload release asset
-      if: github.event_name == 'release'
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./DotNetNinja.Garage-${{ github.event.release.tag_name }}.tar.gz
-        asset_name: DotNetNinja.Garage-${{ github.event.release.tag_name }}.tar.gz
-        asset_content_type: application/gzip
-        
-    - name: Create release (manual dispatch)
-      if: github.event_name == 'workflow_dispatch' && github.event.inputs.create_release == 'true'
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: v${{ github.event.inputs.version }}
-        release_name: Release v${{ github.event.inputs.version }}
-        draft: false
-        prerelease: false
-        body: |
-          ## Manual Release v${{ github.event.inputs.version }}
-          
-          This release was manually created.
-          
-          **Version:** ${{ github.event.inputs.version }}
-          **Commit:** ${{ github.sha }}
-        
-    - name: Upload build artifacts (manual dispatch)
-      if: github.event_name == 'workflow_dispatch'
-      uses: actions/upload-artifact@v7
-      with:
-        name: release-build-${{ github.event.inputs.version }}
-        path: ./DotNetNinja.Garage-${{ github.event.inputs.version }}.tar.gz
+      - uses: actions/checkout@v4
+        with:
+          ref: v${{ inputs.version }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Validate version
+        shell: bash
+        env:
+          GARAGE_VERSION: ${{ inputs.version }}
+        run: |
+          if [[ ! "$GARAGE_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo 'Version must have major.minor.patch format.' >&2
+            exit 1
+          fi
+      - name: Restore
+        run: dotnet restore tests/DotNetNinja.Garage.Tests/DotNetNinja.Garage.Tests.csproj
+      - name: Build
+        env:
+          GARAGE_VERSION: ${{ inputs.version }}
+        run: |
+          dotnet build tests/DotNetNinja.Garage.Tests/DotNetNinja.Garage.Tests.csproj --configuration Release --no-restore \
+            -p:Version="$GARAGE_VERSION" \
+            -p:AssemblyVersion="$GARAGE_VERSION" \
+            -p:FileVersion="$GARAGE_VERSION" \
+            -p:InformationalVersion="$GARAGE_VERSION"
+      - name: Run xUnit tests
+        run: dotnet run --project tests/DotNetNinja.Garage.Tests/DotNetNinja.Garage.Tests.csproj --configuration Release --no-build --no-restore
+      - name: Publish package
+        env:
+          GARAGE_VERSION: ${{ inputs.version }}
+        run: |
+          dotnet publish src/DotNetNinja.Garage/DotNetNinja.Garage.csproj \
+            --configuration Release --no-build --no-restore --output ./publish \
+            -p:Version="$GARAGE_VERSION"
+          cd publish
+          zip -q -r "../DotNetNinja.Garage-$GARAGE_VERSION.zip" .
+      - uses: actions/upload-artifact@v7
+        with:
+          name: garage-manual-${{ inputs.version }}
+          path: DotNetNinja.Garage-${{ inputs.version }}.zip
+          if-no-files-found: error

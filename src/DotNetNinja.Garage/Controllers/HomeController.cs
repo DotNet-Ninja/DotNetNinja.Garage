@@ -1,24 +1,26 @@
-using System.Diagnostics;
+using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
-using DotNetNinja.Garage.Models;
 
 namespace DotNetNinja.Garage.Controllers;
 
-public class HomeController : Controller
+public class HomeController : MvcController<HomeController>
 {
+    public HomeController(IMvcContext<HomeController> mvcContext) : base(mvcContext)
+    {
+    }
+
+    [HttpGet]
     public IActionResult Index()
     {
         return View();
     }
 
-    public IActionResult Privacy()
+    [HttpGet]
+    public IActionResult About()
     {
+        ViewData["Version"] = typeof(HomeController).Assembly
+            .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+            .InformationalVersion ?? "Unknown";
         return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

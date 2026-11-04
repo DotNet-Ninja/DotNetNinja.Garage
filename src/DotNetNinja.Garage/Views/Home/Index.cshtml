@@ -1,8 +1,22 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@{
+    ViewData[ViewKey.Title] = "Home";
+    ViewData[ViewKey.FullBleed] = true;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="home-hero" aria-labelledby="home-title">
+    <div class="home-content">
+        <p class="home-eyebrow"><span aria-hidden="true"></span> Your starting line</p>
+        <h1 id="home-title">Your space.<br /><em>Your pace.</em></h1>
+        <p class="home-description">
+            Keep the places you use within easy reach. Sign in to open your Garage and make it yours.
+        </p>
+        <div class="home-actions">
+            <a is-authenticated="false" class="btn btn-primary btn-lg" asp-controller="Account" asp-action="Login">
+                <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i> Log in to Garage
+            </a>
+            <a is-authenticated="true" class="btn btn-primary btn-lg" asp-controller="Pages" asp-action="Index">
+                <i class="bi bi-arrow-right" aria-hidden="true"></i> Open My Garage
+            </a>
+        </div>
+    </div>
+</section>

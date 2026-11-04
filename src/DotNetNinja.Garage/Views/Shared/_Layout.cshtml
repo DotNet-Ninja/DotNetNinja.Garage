@@ -1,45 +1,44 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+@{
+    var fullBleed = ViewData[ViewKey.FullBleed] is true;
+}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - DotNetNinja.Garage</title>
+    <title>@ViewData[ViewKey.Title] | @AppSettings.ApplicationName</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/DotNetNinja.Garage.styles.css" asp-append-version="true" />
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">DotNetNinja.Garage</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+<body class="garage-shell">
+    <header class="site-header">
+        <nav class="navbar navbar-expand-md container-fluid px-3 px-lg-5" aria-label="Main navigation">
+            <a class="navbar-brand garage-brand" asp-controller="Home" asp-action="Index" aria-label="Garage home">
+                <span class="garage-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+                <span class="garage-wordmark">Garage</span>
+            </a>
+            @await Component.InvokeAsync("Navigation")
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - DotNetNinja.Garage - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <main class="site-main @(fullBleed ? "site-main-bleed" : "")" role="main">
+        <div class="@(fullBleed ? "container-fluid p-0" : "container py-5")">
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container-fluid px-3 px-lg-5 d-flex flex-wrap align-items-center justify-content-start justify-content-md-between gap-3">
+            <a class="garage-brand garage-brand-footer" asp-controller="Home" asp-action="Index" aria-label="Garage home">
+                <span class="garage-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+                <span class="garage-wordmark">Garage</span>
+            </a>
+            <div class="footer-details w-100 w-md-auto ms-md-auto d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <span class="footer-copyright"><copyright>@AppSettings.ApplicationName. All rights reserved.</copyright></span>
+                <partial name="FooterNavigation" />
+            </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
