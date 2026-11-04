@@ -26,33 +26,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get merged pull request labels
-        id: labels
-        uses: actions/github-script@v9
-        with:
-          script: |
-            const { data: prs } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              commit_sha: context.sha
-            });
-            const pr = prs.find(candidate =>
-              candidate.base?.ref === 'main' &&
-              candidate.merged_at &&
-              candidate.merge_commit_sha === context.sha
-            ) ?? prs.find(candidate =>
-              candidate.base?.ref === 'main' && candidate.merged_at
-            );
-            const labels = pr?.labels.map(label => label.name.toLowerCase()) ?? [];
-            if (labels.includes('major') || labels.includes('breaking')) return 'major';
-            if (labels.includes('minor') || labels.includes('feature')) return 'minor';
-            return 'patch';
-
-      - name: Calculate semantic version
-        id: calculate
+      - name: Find last released version
+        id: base
         shell: bash
-        env:
-          BUMP_TYPE: ${{ fromJSON(steps.labels.outputs.result) }}
         run: |
           set -euo pipefail
           latest=v0.0.0
@@ -62,7 +38,90 @@ jobs:
               break
             fi
           done < <(git tag --merged HEAD --list 'v[0-9]*' --sort=-version:refname)
+          echo "latest=$latest" >> "$GITHUB_OUTPUT"
 
+      - name: Find highest version bump since the last release
+        id: labels
+        uses: actions/github-script@v9
+        env:
+          LATEST_TAG: ${{ steps.base.outputs.latest }}
+        with:
+          script: |
+            const { execFileSync } = require('node:child_process');
+            const range = process.env.LATEST_TAG === 'v0.0.0'
+              ? 'HEAD'
+              : `${process.env.LATEST_TAG}..HEAD`;
+            const commits = execFileSync('git', ['rev-list', '--first-parent', range], { encoding: 'utf8' })
+              .trim().split('\n').filter(Boolean);
+            const seen = new Set();
+            let recent = null;
+            let bump = 'patch';
+
+            for (const sha of commits) {
+              const { data: associated } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                commit_sha: sha
+              });
+              let pr = associated.find(candidate =>
+                candidate.base?.ref === 'main' && candidate.merged_at
+              );
+
+              // The association API can lag immediately after a merge. Match the
+              // merge SHA against recently closed PRs before treating it as a push.
+              if (!pr) {
+                if (!recent) {
+                  const response = await github.rest.pulls.list({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    base: 'main',
+                    state: 'closed',
+                    sort: 'updated',
+                    direction: 'desc',
+                    per_page: 100
+                  });
+                  recent = response.data;
+                }
+                pr = recent.find(candidate =>
+                  candidate.merge_commit_sha === sha && candidate.merged_at
+                );
+              }
+
+              if (!pr) {
+                const subject = execFileSync('git', ['log', '-1', '--format=%s', sha], { encoding: 'utf8' }).trim();
+                const match = subject.match(/(?:Merge pull request #|\(#)(\d+)/);
+                if (match) {
+                  const { data: candidate } = await github.rest.pulls.get({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    pull_number: Number(match[1])
+                  });
+                  if (candidate.base?.ref !== 'main' || !candidate.merged_at) {
+                    throw new Error(`Commit ${sha} references PR #${match[1]}, but it is not a merged PR targeting main.`);
+                  }
+                  pr = candidate;
+                }
+              }
+
+              if (!pr || seen.has(pr.number)) continue;
+              seen.add(pr.number);
+              const labels = pr.labels.map(label => label.name.toLowerCase());
+              console.log(`PR #${pr.number} (${sha.slice(0, 8)}): ${labels.join(', ') || 'no labels'}`);
+              if (labels.includes('major') || labels.includes('breaking')) bump = 'major';
+              else if (bump !== 'major' && (labels.includes('minor') || labels.includes('feature'))) bump = 'minor';
+            }
+
+            console.log(`Scanned ${commits.length} main-branch commits since ${process.env.LATEST_TAG}; bump: ${bump}`);
+            return bump;
+
+      - name: Calculate semantic version
+        id: calculate
+        shell: bash
+        env:
+          BUMP_TYPE: ${{ fromJSON(steps.labels.outputs.result) }}
+        run: |
+          set -euo pipefail
+          latest="${{ steps.base.outputs.latest }}"
           IFS=. read -r major minor patch <<< "${latest#v}"
           case "$BUMP_TYPE" in
             major) major=$((major + 1)); minor=0; patch=0 ;;
