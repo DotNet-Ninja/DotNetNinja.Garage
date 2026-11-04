@@ -9,18 +9,20 @@ Garage deploys to an Azure App Service Web App when a commit reaches `main`. Pul
 3. Create a Microsoft Entra application or user-assigned managed identity for GitHub Actions deployment. Give it deployment rights to the Web App (for example, Website Contributor scoped to that Web App). Add a federated credential for GitHub's `production` environment. In Azure's GitHub Actions form, enter organization `DotNet-Ninja`, repository `DotNetNinja.Garage`, and environment `production`. Confirm the generated subject names that repository. For repositories using GitHub's immutable OIDC subject format, it will look like `repo:DotNet-Ninja@44194993/DotNetNinja.Garage@<repository-id>:environment:production`; older repositories may use `repo:DotNet-Ninja/DotNetNinja.Garage:environment:production`. The audience is `api://AzureADTokenExchange`. The workflow uses OpenID Connect and requires no long-lived Azure client secret.
 4. Create a production Auth0 Regular Web Application. Register `https://<your-web-app-host>/callback` as an allowed callback URL, `https://<your-web-app-host>/` as an allowed logout URL, and `https://<your-web-app-host>` as an allowed web origin. Use the Web App's actual hostname, which may include a generated suffix. Register any custom domain separately.
 
-## GitHub environment variables
+## GitHub environment secrets
 
-Create a GitHub environment named **`production`** in the repository's Settings → Environments. Set these environment variables there (Settings → Environments → production → Environment variables):
+Create a GitHub environment named **`production`** in the repository's Settings → Environments. Set these environment secrets there (Settings → Environments → production → Environment secrets):
 
-| Variable | Value |
+| Secret | Value |
 | --- | --- |
 | `AZURE_CLIENT_ID` | Client ID of the deployment identity with the GitHub federated credential. |
 | `AZURE_TENANT_ID` | Microsoft Entra tenant ID for that identity. |
 | `AZURE_SUBSCRIPTION_ID` | Azure subscription ID containing the Web App. |
 | `AZURE_WEBAPP_NAME` | Exact Azure Web App resource name. |
 
-These are identifiers, not credentials. The deployment job checks that each one is present before signing in. The environment may have protection rules; a required reviewer will pause deployment until approved. For fully automatic deployment after a main merge, leave required reviewers disabled.
+These values identify the deployment identity and Web App. They can be stored as secrets even though they are not passwords. The deployment job checks that each one is present before signing in. The environment may have protection rules; a required reviewer will pause deployment until approved. For fully automatic deployment after a main merge, leave required reviewers disabled.
+
+If the `Check Azure deployment settings` step reports an empty value, check that the four entries exist under **Environment secrets** in the GitHub `production` environment with exactly the names above. Azure Web App app settings are a separate store; this workflow reads GitHub environment secrets through the `secrets` context. Rerun the failed workflow after the workflow change reaches `main`.
 
 The workflow uses the repository's `GITHUB_TOKEN` to read pull request labels and create tags/releases. Repository Actions settings must allow workflows to run, and repository tag protection or rulesets must permit the Actions identity to create `v*` tags. The release job declares `contents: write`; no personal access token is required. A branch protection rule can require the pull request **Build and Test** check before a merge.
 
