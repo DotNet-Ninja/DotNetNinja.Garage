@@ -1,0 +1,36 @@
+@model MyAccountViewModel
+@{
+    ViewData[ViewKey.Title] = "My Account";
+    ViewData[ViewKey.FullBleed] = true;
+}
+
+<section class="home-hero account-hero" aria-labelledby="account-title">
+    <div class="account-content">
+        <p class="home-eyebrow"><span aria-hidden="true"></span> Driver profile</p>
+        <h1 id="account-title">My Account</h1>
+        <p class="account-description">Your Garage session is ready to go.</p>
+
+        <div class="account-details" aria-label="Account details">
+            <div class="account-details-heading">Driver details <span aria-hidden="true">////</span></div>
+            <dl>
+                <div class="account-detail-row">
+                    <dt><i class="bi bi-person" aria-hidden="true"></i> Name</dt>
+                    <dd>@Model.Name</dd>
+                </div>
+                <div class="account-detail-row">
+                    <dt><i class="bi bi-envelope" aria-hidden="true"></i> Email</dt>
+                    <dd>@Model.Email</dd>
+                </div>
+            </dl>
+            <form asp-controller="Account" asp-action="Logout" method="post" class="account-logout">
+                @Html.AntiForgeryToken()
+                <button class="btn btn-primary" type="submit"><i class="bi bi-box-arrow-right" aria-hidden="true"></i> Log out</button>
+            </form>
+            <a class="account-claims-link" asp-controller="Account" asp-action="Claims">View authentication claims</a>
+            @if (User.IsInRole(Roles.DatabaseManager))
+            {
+                <div><a class="account-claims-link" asp-controller="Account" asp-action="Database">Database management</a></div>
+            }
+        </div>
+    </div>
+</section>

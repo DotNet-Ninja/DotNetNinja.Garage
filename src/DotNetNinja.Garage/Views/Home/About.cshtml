@@ -1,0 +1,16 @@
+@{
+    ViewData[ViewKey.Title] = "About";
+    ViewData[ViewKey.FullBleed] = true;
+}
+
+<section class="home-hero about-hero" aria-labelledby="about-title">
+    <div class="about-card">
+        <p class="home-eyebrow"><span aria-hidden="true"></span> About the site</p>
+        <h1 id="about-title">Garage</h1>
+        <p class="about-description">Your space to get where you need to go.</p>
+        <div class="about-version">
+            <span>Current version</span>
+            <strong>@ViewData[ViewKey.Version]</strong>
+        </div>
+    </div>
+</section>

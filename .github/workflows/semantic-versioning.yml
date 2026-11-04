@@ -1,203 +1,194 @@
-name: Semantic Versioning
+name: Build, version, and deploy
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
+
+# Keep version calculations and deployments in the same order as main merges.
+concurrency:
+  group: garage-main-deployment
+  cancel-in-progress: false
 
 env:
   DOTNET_VERSION: '10.0.x'
 
-permissions:
-  contents: write      # Required to create tags and releases
-  pull-requests: read  # Required to read merged PR labels
-  actions: read        # Required for workflow access
-
 jobs:
-  version-and-tag:
+  version:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
     outputs:
-      new-version: ${{ steps.versioning.outputs.new-version }}
-      version-changed: ${{ steps.versioning.outputs.version-changed }}
-    
+      number: ${{ steps.calculate.outputs.number }}
+      tag: ${{ steps.calculate.outputs.tag }}
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-        token: ${{ secrets.GITHUB_TOKEN }}
-        
-    - name: Get merged PR labels
-      id: pr-labels
-      uses: actions/github-script@v9
-      with:
-        script: |
-          const { data: prs } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            commit_sha: context.sha
-          });
-          
-          if (prs.length === 0) {
-            console.log(`No PRs associated with commit ${context.sha}`);
-            return { labels: [], bump: 'patch' };
-          }
-          
-          const pr = prs.find(candidate =>
-            candidate.base?.ref === 'main' &&
-            candidate.merged_at &&
-            candidate.merge_commit_sha === context.sha
-          ) ?? prs.find(candidate =>
-            candidate.base?.ref === 'main' &&
-            candidate.merged_at
-          );
-          
-          if (!pr) {
-            console.log(`Commit ${context.sha} is not associated with a merged PR targeting main`);
-            return { labels: [], bump: 'patch' };
-          }
-          
-          const labels = pr.labels.map(label => label.name.toLowerCase());
-          console.log('PR Labels:', labels);
-          
-          let bump = 'patch'; // default
-          if (labels.includes('major') || labels.includes('breaking')) {
-            bump = 'major';
-          } else if (labels.includes('minor') || labels.includes('feature')) {
-            bump = 'minor';
-          } else if (labels.includes('patch') || labels.includes('fix') || labels.includes('bugfix')) {
-            bump = 'patch';
-          }
-          
-          return { labels, bump, prNumber: pr.number, prTitle: pr.title };
-        
-    - name: Calculate new version
-      id: versioning
-      run: |
-        # Get the latest tag
-        LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
-        echo "Latest tag: $LATEST_TAG"
-        
-        # Remove 'v' prefix if present
-        CURRENT_VERSION=${LATEST_TAG#v}
-        
-        # Parse version components
-        IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
-        
-        # Get bump type from previous step
-        BUMP_TYPE="${{ fromJson(steps.pr-labels.outputs.result).bump }}"
-        echo "Bump type: $BUMP_TYPE"
-        
-        # Calculate new version
-        case $BUMP_TYPE in
-          "major")
-            MAJOR=$((MAJOR + 1))
-            MINOR=0
-            PATCH=0
-            ;;
-          "minor")
-            MINOR=$((MINOR + 1))
-            PATCH=0
-            ;;
-          "patch")
-            PATCH=$((PATCH + 1))
-            ;;
-        esac
-        
-        NEW_VERSION="$MAJOR.$MINOR.$PATCH"
-        NEW_TAG="v$NEW_VERSION"
-        
-        echo "New version: $NEW_VERSION"
-        echo "New tag: $NEW_TAG"
-        
-        # Set outputs
-        echo "new-version=$NEW_VERSION" >> $GITHUB_OUTPUT
-        echo "new-tag=$NEW_TAG" >> $GITHUB_OUTPUT
-        echo "version-changed=true" >> $GITHUB_OUTPUT
-        
-        # Check if this is actually a new version
-        if [ "$NEW_TAG" = "$LATEST_TAG" ]; then
-          echo "version-changed=false" >> $GITHUB_OUTPUT
-          echo "No version change needed"
-        fi
-        
-    - name: Create and push tag
-      if: steps.versioning.outputs.version-changed == 'true'
-      run: |
-        NEW_TAG="${{ steps.versioning.outputs.new-tag }}"
-        PR_INFO=$(echo '${{ steps.pr-labels.outputs.result }}' | jq -r '.prTitle // "Direct push to main"')
-        
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-        
-        # Create tag with message
-        git tag -a "$NEW_TAG" -m "Release $NEW_TAG - $PR_INFO"
-        git push origin "$NEW_TAG"
-        
-        echo "Tagged and pushed: $NEW_TAG"
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-  build-with-version:
-    needs: version-and-tag
-    if: needs.version-and-tag.outputs.version-changed == 'true'
+      - name: Get merged pull request labels
+        id: labels
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const { data: prs } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              commit_sha: context.sha
+            });
+            const pr = prs.find(candidate =>
+              candidate.base?.ref === 'main' &&
+              candidate.merged_at &&
+              candidate.merge_commit_sha === context.sha
+            ) ?? prs.find(candidate =>
+              candidate.base?.ref === 'main' && candidate.merged_at
+            );
+            const labels = pr?.labels.map(label => label.name.toLowerCase()) ?? [];
+            if (labels.includes('major') || labels.includes('breaking')) return 'major';
+            if (labels.includes('minor') || labels.includes('feature')) return 'minor';
+            return 'patch';
+
+      - name: Calculate semantic version
+        id: calculate
+        shell: bash
+        env:
+          BUMP_TYPE: ${{ fromJSON(steps.labels.outputs.result) }}
+        run: |
+          set -euo pipefail
+          latest=v0.0.0
+          while IFS= read -r tag; do
+            if [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              latest="$tag"
+              break
+            fi
+          done < <(git tag --merged HEAD --list 'v[0-9]*' --sort=-version:refname)
+
+          IFS=. read -r major minor patch <<< "${latest#v}"
+          case "$BUMP_TYPE" in
+            major) major=$((major + 1)); minor=0; patch=0 ;;
+            minor) minor=$((minor + 1)); patch=0 ;;
+            patch) patch=$((patch + 1)) ;;
+            *) echo "Invalid bump type: $BUMP_TYPE" >&2; exit 1 ;;
+          esac
+
+          number="$major.$minor.$patch"
+          echo "Previous tag: $latest; next version: $number ($BUMP_TYPE)"
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+          echo "tag=v$number" >> "$GITHUB_OUTPUT"
+
+  build-and-test:
+    needs: version
     runs-on: ubuntu-latest
-    
+    permissions:
+      contents: read
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
-        
-    - name: Cache NuGet packages
-      uses: actions/cache@v5
-      with:
-        path: ~/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-        restore-keys: |
-          ${{ runner.os }}-nuget-
-          
-    - name: Restore dependencies
-      run: dotnet restore DotNetNinja.Garage.slnx
-      
-    - name: Build with version
-      run: |
-        VERSION="${{ needs.version-and-tag.outputs.new-version }}"
-        dotnet build DotNetNinja.Garage.slnx \
-          --configuration Release \
-          --no-restore \
-          -p:Version=$VERSION \
-          -p:AssemblyVersion=$VERSION \
-          -p:FileVersion=$VERSION \
-          -p:InformationalVersion=$VERSION
-      
-    - name: Run tests
-      run: |
-        VERSION="${{ needs.version-and-tag.outputs.new-version }}"
-        dotnet test DotNetNinja.Garage.slnx \
-          --configuration Release \
-          --no-build \
-          --verbosity normal \
-          --collect:"XPlat Code Coverage" \
-          --results-directory ./coverage \
-          -p:Version=$VERSION
-      
-    - name: Create release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: v${{ needs.version-and-tag.outputs.new-version }}
-        release_name: Release v${{ needs.version-and-tag.outputs.new-version }}
-        draft: false
-        prerelease: false
-        body: |
-          ## Changes in v${{ needs.version-and-tag.outputs.new-version }}
-          
-          This release was automatically created from the latest changes to main branch.
-          
-          **Version:** ${{ needs.version-and-tag.outputs.new-version }}
-          **Commit:** ${{ github.sha }}
-          
-          ### Installation
-          Download the release assets below or pull the latest container image.
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Restore
+        run: dotnet restore tests/DotNetNinja.Garage.Tests/DotNetNinja.Garage.Tests.csproj
+      - name: Build with the release version
+        env:
+          GARAGE_VERSION: ${{ needs.version.outputs.number }}
+        run: |
+          dotnet build tests/DotNetNinja.Garage.Tests/DotNetNinja.Garage.Tests.csproj --configuration Release --no-restore \
+            -p:Version="$GARAGE_VERSION" \
+            -p:AssemblyVersion="$GARAGE_VERSION" \
+            -p:FileVersion="$GARAGE_VERSION" \
+            -p:InformationalVersion="$GARAGE_VERSION"
+      - name: Run xUnit tests
+        run: dotnet run --project tests/DotNetNinja.Garage.Tests/DotNetNinja.Garage.Tests.csproj --configuration Release --no-build --no-restore
+      - name: Publish web app
+        env:
+          GARAGE_VERSION: ${{ needs.version.outputs.number }}
+        run: |
+          dotnet publish src/DotNetNinja.Garage/DotNetNinja.Garage.csproj \
+            --configuration Release --no-build --no-restore --output ./publish \
+            -p:Version="$GARAGE_VERSION"
+          cd publish
+          zip -q -r "../DotNetNinja.Garage-$GARAGE_VERSION.zip" .
+      - uses: actions/upload-artifact@v7
+        with:
+          name: garage-release-package
+          path: DotNetNinja.Garage-${{ needs.version.outputs.number }}.zip
+          if-no-files-found: error
+
+  deploy:
+    needs: [version, build-and-test]
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      AZURE_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      AZURE_WEBAPP_NAME: ${{ vars.AZURE_WEBAPP_NAME }}
+    steps:
+      - name: Check Azure deployment variables
+        shell: bash
+        run: |
+          for name in AZURE_CLIENT_ID AZURE_TENANT_ID AZURE_SUBSCRIPTION_ID AZURE_WEBAPP_NAME; do
+            if [ -z "${!name}" ]; then
+              echo "Missing GitHub environment variable: $name" >&2
+              exit 1
+            fi
+          done
+      - uses: actions/download-artifact@v4
+        with:
+          name: garage-release-package
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ env.AZURE_CLIENT_ID }}
+          tenant-id: ${{ env.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+      - name: Deploy to Azure Web App
+        id: webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          package: DotNetNinja.Garage-${{ needs.version.outputs.number }}.zip
+      - name: Verify the deployed version
+        env:
+          WEBAPP_URL: ${{ steps.webapp.outputs.webapp-url }}
+          GARAGE_VERSION: ${{ needs.version.outputs.number }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "$WEBAPP_URL" ]; then
+            echo 'Azure deployment did not return a web app URL.' >&2
+            exit 1
+          fi
+          curl --fail --silent --show-error --location --retry 6 --retry-delay 10 \
+            --retry-all-errors --max-time 30 "${WEBAPP_URL%/}/Home/About" \
+            | grep --fixed-strings "$GARAGE_VERSION"
+
+  release:
+    needs: [version, deploy]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: garage-release-package
+      - name: Tag the deployed commit and publish the package
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GARAGE_VERSION: ${{ needs.version.outputs.number }}
+          GARAGE_TAG: ${{ needs.version.outputs.tag }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git tag -a "$GARAGE_TAG" -m "Release $GARAGE_TAG"
+          git push origin "$GARAGE_TAG"
+          gh release create "$GARAGE_TAG" "DotNetNinja.Garage-$GARAGE_VERSION.zip" \
+            --verify-tag --title "Release $GARAGE_TAG" \
+            --notes "Deployed Garage $GARAGE_TAG from $GITHUB_SHA."

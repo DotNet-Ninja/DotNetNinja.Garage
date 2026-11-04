@@ -1,0 +1,1285 @@
+{
+  "pages": [
+    {
+      "slug": "start",
+      "groups": [
+        {
+          "bookmarks": [
+            {
+              "href": "https://www.outlook.com/",
+              "icon": 794,
+              "iconColor": "#127CD6",
+              "openInNewTab": true,
+              "id": "51ce7f0b-76d5-4551-87a0-fd4cdc7ed193",
+              "text": "Outlook E-mail",
+              "sortIndex": 1
+            },
+            {
+              "href": "https://www.outlook.com/calendar",
+              "icon": 357,
+              "iconColor": "#127CD6",
+              "openInNewTab": true,
+              "id": "8fab229c-e532-4988-8cd9-b7982a9fc279",
+              "text": "Outlook Calendar",
+              "sortIndex": 2
+            },
+            {
+              "href": "https://copilot.microsoft.com/",
+              "icon": 439,
+              "iconColor": "#0874d9",
+              "openInNewTab": true,
+              "id": "befb89c3-af5a-4aec-8536-23cd7374426b",
+              "text": "Microsoft Copilot",
+              "sortIndex": 3
+            },
+            {
+              "href": "https://www.bing.com/",
+              "icon": 1608,
+              "iconColor": "#145df0",
+              "openInNewTab": true,
+              "id": "89938db6-0e8a-4682-b52c-cbaeb0ab5e13",
+              "text": "Bing Search",
+              "sortIndex": 4
+            },
+            {
+              "href": "https://onedrive.live.com/",
+              "icon": 569,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "53b2ed08-17ac-4559-bddc-9b9d655d7835",
+              "text": "OneDrive",
+              "sortIndex": 5
+            },
+            {
+              "href": "https://excel.cloud.microsoft/",
+              "icon": 929,
+              "iconColor": "#10793f",
+              "openInNewTab": true,
+              "id": "ec98f980-ff25-4040-9a68-7690771a3ddd",
+              "text": "Microsoft Excel",
+              "sortIndex": 6
+            },
+            {
+              "href": "https://to-do.live.com/tasks/",
+              "icon": 482,
+              "iconColor": "#127CD6",
+              "openInNewTab": true,
+              "id": "79b1cee3-d0cc-4334-b1e2-caec1e9d248f",
+              "text": "Microsoft To Do",
+              "sortIndex": 7
+            },
+            {
+              "href": "https://www.office.com/launch/word",
+              "icon": 933,
+              "iconColor": "#1B5EBE",
+              "openInNewTab": true,
+              "id": "d4a8f403-b381-4d46-96fe-cff6ded4660f",
+              "text": "Microsoft Word",
+              "sortIndex": 8
+            }
+          ],
+          "id": "24f2a6d4-c06d-4099-9038-ef70bedc2cf7",
+          "text": "Microsoft Account",
+          "sortIndex": 1
+        },
+        {
+          "bookmarks": [
+            {
+              "href": "https://github.com/dotnet-ninja",
+              "icon": 1095,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "b4cde7d8-dc59-48bb-b325-8dab1fe7ccdf",
+              "text": "GitHub",
+              "sortIndex": 1
+            },
+            {
+              "href": "https://dev.azure.com/chaosmonkey/",
+              "icon": 1447,
+              "iconColor": "#8661C5",
+              "openInNewTab": true,
+              "id": "113232ed-0963-4373-bdf4-7df5eda5617c",
+              "text": "Azure DevOps",
+              "sortIndex": 2
+            },
+            {
+              "href": "https://portal.azure.com/",
+              "icon": 603,
+              "iconColor": "#008AD7",
+              "openInNewTab": true,
+              "id": "96973625-8691-43ad-ac57-f2350ea2ac8a",
+              "text": "Azure Portal",
+              "sortIndex": 3
+            },
+            {
+              "href": "https://www.nuget.org/",
+              "icon": 233,
+              "iconColor": "#004880",
+              "openInNewTab": true,
+              "id": "887884bf-1695-49c1-bd9a-6bb9004389f1",
+              "text": "NuGet",
+              "sortIndex": 4
+            },
+            {
+              "href": "https://dotnetninja.net/",
+              "icon": 1593,
+              "iconColor": "#fe5000",
+              "openInNewTab": true,
+              "id": "a1ef3875-5bc7-42a8-820a-66a9d4eb6c49",
+              "text": "DotNetNinja.net",
+              "sortIndex": 5
+            },
+            {
+              "href": "https://udemy.com/",
+              "icon": 747,
+              "iconColor": "#A435F0",
+              "openInNewTab": true,
+              "id": "301180bf-8d77-4964-9d6b-411440166dde",
+              "text": "Udemy",
+              "sortIndex": 6
+            },
+            {
+              "href": "https://www.bluehost.com/my-account/hosting/details",
+              "icon": 1097,
+              "iconColor": "#2764dd",
+              "openInNewTab": true,
+              "id": "ce5a727d-c7f0-4ec0-bb53-4962825cc170",
+              "text": "BlueHost Web Hosting",
+              "sortIndex": 7
+            }
+          ],
+          "id": "6c4114a0-82ae-4a0c-9b05-ce95279f1ccc",
+          "text": "Development",
+          "sortIndex": 2
+        },
+        {
+          "bookmarks": [
+            {
+              "href": "https://www.amazon.com",
+              "icon": 19,
+              "iconColor": "#ff9900",
+              "openInNewTab": true,
+              "id": "01d71283-b394-4a5d-b0ca-dc790ba61b1a",
+              "text": "Amazon",
+              "sortIndex": 1
+            },
+            {
+              "href": "https://www.cabelas.com/",
+              "icon": 147,
+              "iconColor": "#FEC900",
+              "openInNewTab": true,
+              "id": "519a70e0-a05e-4910-9fdf-ef6e406a7a66",
+              "text": "Cabela\u0027s",
+              "sortIndex": 2
+            },
+            {
+              "href": "https://www.etsy.com",
+              "icon": 147,
+              "iconColor": "#d5641c",
+              "openInNewTab": true,
+              "id": "3364c1ef-1cbc-4d10-a6c8-d37631635434",
+              "text": "Etsy",
+              "sortIndex": 3
+            },
+            {
+              "href": "https://www.homedepot.com",
+              "icon": 147,
+              "iconColor": "#f96302",
+              "openInNewTab": true,
+              "id": "7ae15946-e609-4208-b01c-0b9a0aded7db",
+              "text": "Home Depot",
+              "sortIndex": 5
+            },
+            {
+              "href": "https://www.walmart.com",
+              "icon": 147,
+              "iconColor": "#007dc6",
+              "openInNewTab": true,
+              "id": "f5d572c0-c2eb-4686-b059-f914b886956c",
+              "text": "Walmart",
+              "sortIndex": 5
+            },
+            {
+              "href": "https://www.chewy.com/",
+              "icon": 147,
+              "iconColor": "#128ced",
+              "openInNewTab": true,
+              "id": "563cf749-d5e7-4ff6-945a-38357bcb3bb5",
+              "text": "Chewy",
+              "sortIndex": 6
+            },
+            {
+              "href": "https://www.microcenter.com",
+              "icon": 635,
+              "iconColor": "#d8ea4d",
+              "openInNewTab": true,
+              "id": "945a1866-f9da-4109-a43c-87d4e73d29b2",
+              "text": "Microcenter",
+              "sortIndex": 7
+            },
+            {
+              "href": "https://www.lowes.com/",
+              "icon": 147,
+              "iconColor": "#012169",
+              "openInNewTab": true,
+              "id": "e3a867b5-d60d-4898-b538-387e61a81bc4",
+              "text": "Lowes",
+              "sortIndex": 4
+            }
+          ],
+          "id": "1c18a0ce-4f93-4c08-98f0-95fe0d0f872f",
+          "text": "Shopping",
+          "sortIndex": 3
+        },
+        {
+          "bookmarks": [
+            {
+              "href": "https://www.youtube.com/",
+              "icon": 2048,
+              "iconColor": "#ff0000",
+              "openInNewTab": true,
+              "id": "00b3de22-28d0-41a0-90e7-88d4231a6375",
+              "text": "YouTube",
+              "sortIndex": 2
+            },
+            {
+              "href": "https://www.discoveryplus.com/",
+              "icon": 1469,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "bc23e42d-da5b-4b01-9db7-6bac784c6355",
+              "text": "Discovery \u002B",
+              "sortIndex": 3
+            },
+            {
+              "href": "https://play.hbomax.com/page/urn:hbo:page:home",
+              "icon": 1469,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "250f90ea-1171-4a92-9ae1-3674efaa4c14",
+              "text": "HBO Max",
+              "sortIndex": 4
+            },
+            {
+              "href": "https://www.hulu.com/hub/home",
+              "icon": 1469,
+              "iconColor": "#66aa33",
+              "openInNewTab": true,
+              "id": "c700407c-3fd9-4168-9bd8-fb157b5db3a5",
+              "text": "Hulu",
+              "sortIndex": 5
+            },
+            {
+              "href": "https://www.disneyplus.com/home",
+              "icon": 1469,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "c6c93f23-8468-4e4e-ae70-07c6f484cc7f",
+              "text": "Disney \u002B",
+              "sortIndex": 6
+            },
+            {
+              "href": "https://www.audible.com/library/titles",
+              "icon": 194,
+              "iconColor": "#f7991c",
+              "openInNewTab": true,
+              "id": "b19871b6-1b1a-45fe-8177-c5c1bb392dcd",
+              "text": "Audible Library",
+              "sortIndex": 7
+            },
+            {
+              "href": "https://www.imdb.com/search/",
+              "icon": 1037,
+              "iconColor": "#f5c518",
+              "openInNewTab": true,
+              "id": "9dc962ed-c768-4c1c-874a-9f45d31533be",
+              "text": "IMDB",
+              "sortIndex": 8
+            },
+            {
+              "href": "http://home.larryhouse.net:8096",
+              "icon": 623,
+              "iconColor": "#2b5bee",
+              "openInNewTab": true,
+              "id": "4998a683-9599-45bd-985e-ab2b530c1538",
+              "text": "Jellyfin",
+              "sortIndex": 9
+            },
+            {
+              "href": "https://forum.makemkv.com/forum/viewtopic.php?t=1053",
+              "icon": 1283,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "fc0d0b06-968f-46d8-9750-8b578f88172b",
+              "text": "Make MKV Forum",
+              "sortIndex": 11
+            }
+          ],
+          "id": "90d05455-5ee8-4465-8bb0-d58fef6a980f",
+          "text": "Media",
+          "sortIndex": 4
+        },
+        {
+          "bookmarks": [
+            {
+              "href": "https://google.com/maps",
+              "icon": 1089,
+              "iconColor": "#4285f4",
+              "openInNewTab": true,
+              "id": "e182d5c3-4e92-44f5-988a-fb6349c88d2b",
+              "text": "Google Maps",
+              "sortIndex": 1
+            },
+            {
+              "href": "https://www.wunderground.com/",
+              "icon": 612,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "34725d10-22c0-4b1a-9929-1aecf4fea526",
+              "text": "Wunderground",
+              "sortIndex": 2
+            },
+            {
+              "href": "https://www.accuweather.com/",
+              "icon": 612,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "c8ac4805-c94c-4d84-b3c6-e585718d679e",
+              "text": "AccuWeather",
+              "sortIndex": 3
+            },
+            {
+              "href": "https://www.weather.com/",
+              "icon": 612,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "0072d5e5-6c51-4a3b-a23e-51d11056ab73",
+              "text": "Weather.com",
+              "sortIndex": 4
+            },
+            {
+              "href": "https://www.lightningmaps.org/",
+              "icon": 589,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "bdf59445-9505-4e69-a003-8ea113b8e62c",
+              "text": "Lightning Maps",
+              "sortIndex": 5
+            },
+            {
+              "href": "https://www.nhc.noaa.gov/",
+              "icon": 1931,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "44c964f0-f49e-4b91-a79d-cad50d1ce0a2",
+              "text": "National Hurricane Center",
+              "sortIndex": 6
+            },
+            {
+              "href": "https://www.astrospheric.com/?Latitude=32.862808227539\u0026Longitude=-97.342468261719\u0026Loc=Forecast",
+              "icon": 1342,
+              "iconColor": "#990000",
+              "openInNewTab": true,
+              "id": "954c5dff-51e0-4916-b35c-4143ce73ff1f",
+              "text": "Astrospheric",
+              "sortIndex": 7
+            },
+            {
+              "href": "https://www.lightpollutionmap.info/#zoom=5.35\u0026lat=32.7154\u0026lon=-99.6730\u0026state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nUm9hZCIsIm92ZXJsYXkiOiJ3YV8yMDE1Iiwib3ZlcmxheWNvbG9yIjpmYWxzZSwib3ZlcmxheW9wYWNpdHkiOjYwLCJmZWF0dXJlc29wYWNpdHkiOjg1fQ==",
+              "icon": 1342,
+              "iconColor": "#990000",
+              "openInNewTab": true,
+              "id": "0329b288-d5c5-4e31-997d-df973d8fd2d1",
+              "text": "Light Pollution Map",
+              "sortIndex": 8
+            },
+            {
+              "href": "https://clearoutside.com/forecast/32.88/-97.29",
+              "icon": 1342,
+              "iconColor": "#990000",
+              "openInNewTab": true,
+              "id": "35645e78-d161-4f84-91f4-62ae0d0bc2ab",
+              "text": "Clear Outside",
+              "sortIndex": 9
+            },
+            {
+              "href": "https://www.fox4news.com/weather",
+              "icon": 592,
+              "iconColor": "#0096ff",
+              "openInNewTab": true,
+              "id": "4f00ed86-4a6c-4134-8735-387175835624",
+              "text": "Fox 4 Weather - Local",
+              "sortIndex": 10
+            },
+            {
+              "href": "https://radar.weather.gov/?settings=v1_eyJhZ2VuZGEiOnsiaWQiOiJsb2NhbCIsImNlbnRlciI6Wy05Ny4zNjksMzIuODY1XSwibG9jYXRpb24iOm51bGwsInpvb20iOjExLjYzODIyODExNzAzMTIsImZpbHRlciI6IldTUi04OEQiLCJsYXllciI6InNyX2J2ZWwiLCJzdGF0aW9uIjoiS0ZXUyJ9LCJhbmltYXRpbmciOmZhbHNlLCJiYXNlIjoic3RhbmRhcmQiLCJhcnRjYyI6ZmFsc2UsImNvdW50eSI6ZmFsc2UsImN3YSI6ZmFsc2UsInJmYyI6ZmFsc2UsInN0YXRlIjpmYWxzZSwibWVudSI6dHJ1ZSwic2hvcnRGdXNlZE9ubHkiOnRydWUsIm9wYWNpdHkiOnsiYWxlcnRzIjowLjgsImxvY2FsIjowLjYsImxvY2FsU3RhdGlvbnMiOjAuOCwibmF0aW9uYWwiOjAuNn19",
+              "icon": 1277,
+              "iconColor": "#fbff24",
+              "openInNewTab": true,
+              "id": "a07025e2-dce2-4118-a86d-1178e1157ba4",
+              "text": "NOAA Radar - Base Velocity",
+              "sortIndex": 11
+            }
+          ],
+          "id": "00e39b6e-2829-4919-b851-883be2fb8b64",
+          "text": "Maps \u0026 Weather",
+          "sortIndex": 5
+        },
+        {
+          "bookmarks": [
+            {
+              "href": "http://home.larryhouse.net:11721/",
+              "icon": 1046,
+              "iconColor": "#500da0",
+              "openInNewTab": false,
+              "id": "bbbfa466-29e8-4541-82e3-fab70739981e",
+              "text": "Fuzzy Bunny Start",
+              "sortIndex": 1
+            },
+            {
+              "href": "https://www.nascar.com/",
+              "icon": 1048,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "2af56a9a-b478-4d42-b2cf-6e8e056abea7",
+              "text": "NASCAR",
+              "sortIndex": 2
+            },
+            {
+              "href": "http://home.larryhouse.net:8123/",
+              "icon": 1187,
+              "iconColor": "#9e61c5",
+              "openInNewTab": true,
+              "id": "dc80ebf6-592c-4c90-9ce7-59b8042834eb",
+              "text": "Home Assistant",
+              "sortIndex": 3
+            },
+            {
+              "href": "http://localhost:8200/ngax/index.html#/",
+              "icon": 1139,
+              "iconColor": "#3e9ff0",
+              "openInNewTab": true,
+              "id": "4d34f31c-00cd-40c8-849e-1aa1fe097e7e",
+              "text": "Duplicati",
+              "sortIndex": 4
+            },
+            {
+              "href": "https://www.fitbit.com/",
+              "icon": 1741,
+              "iconColor": "#00b0b9",
+              "openInNewTab": true,
+              "id": "00742eee-6898-49f0-b121-ca6d703dab68",
+              "text": "FitBit",
+              "sortIndex": 5
+            },
+            {
+              "href": "http://router.larryhouse.net/",
+              "icon": 1588,
+              "iconColor": "#3272f1",
+              "openInNewTab": true,
+              "id": "ddac5646-e620-4822-802f-f897c49208dc",
+              "text": "Router - Asus ROG Strix GS-AX5400",
+              "sortIndex": 6
+            },
+            {
+              "href": "http://192.168.1.254",
+              "icon": 1482,
+              "iconColor": "#00a8e0",
+              "openInNewTab": true,
+              "id": "be9cd281-96d2-48af-b649-500d13742dbe",
+              "text": "Router - AT\u0026T",
+              "sortIndex": 7
+            },
+            {
+              "href": "http://home.larryhouse.net:8080/",
+              "icon": 1608,
+              "iconColor": "#ea8b06",
+              "openInNewTab": true,
+              "id": "9f3ce157-229c-4deb-a3f5-63a674dfe6e0",
+              "text": "Ninja Search",
+              "sortIndex": 8
+            },
+            {
+              "href": "https://chat.openai.com/",
+              "icon": 2051,
+              "iconColor": "#9437ff",
+              "openInNewTab": true,
+              "id": "bd2f3b73-856a-4c9f-9e33-fa3764a2c1fb",
+              "text": "Open AI - Chat GPT",
+              "sortIndex": 9
+            },
+            {
+              "href": "http://localhost:3000/",
+              "icon": 439,
+              "iconColor": "#ff6600",
+              "openInNewTab": true,
+              "id": "0c5a3808-5530-4c9f-bbca-eaee24646380",
+              "text": "Local AI Chat",
+              "sortIndex": 10
+            }
+          ],
+          "id": "caf17153-3566-47d7-bda7-95f36e7548be",
+          "text": "Other",
+          "sortIndex": 6
+        }
+      ],
+      "id": "ec2879a7-115d-45e6-9ce6-f2432d53aa85",
+      "text": "Start Page",
+      "sortIndex": 1
+    },
+    {
+      "slug": "photography",
+      "groups": [
+        {
+          "bookmarks": [
+            {
+              "href": "https://digitalshutterbug.smugmug.com/",
+              "icon": 378,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "6a385d69-625e-4a6d-b7a5-a52a56460060",
+              "text": "Digital Shutterbug",
+              "sortIndex": 1
+            },
+            {
+              "href": "https://instagram.com/",
+              "icon": 1224,
+              "iconColor": "#e1306c",
+              "openInNewTab": true,
+              "id": "301fbcf4-0db9-444a-a1cd-6da710d26124",
+              "text": "Instagram",
+              "sortIndex": 2
+            },
+            {
+              "href": "https://52frames.com/",
+              "icon": 1037,
+              "iconColor": "#c0c0c0",
+              "openInNewTab": true,
+              "id": "a865675b-02f0-4601-83e8-fba2a26ee28d",
+              "text": "52 Frames",
+              "sortIndex": 3
+            },
+            {
+              "href": "https://www.larryhouse.photography/",
+              "icon": 1037,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "aeb2ca28-3ac2-4b43-bc56-b081a9844d4f",
+              "text": "Larry House Photography",
+              "sortIndex": 4
+            },
+            {
+              "href": "https://account.squarespace.com/",
+              "icon": 1766,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "387f7b84-047a-4509-893f-2c29735200b3",
+              "text": "Squarespace",
+              "sortIndex": 5
+            },
+            {
+              "href": "https://app.metricool.com/planner/calendar?blogId=2870942\u0026userId=2304242",
+              "icon": 356,
+              "iconColor": "#c0c0c0",
+              "openInNewTab": true,
+              "id": "3e5544e6-2744-462b-8bf6-3415773f28a4",
+              "text": "Metricool",
+              "sortIndex": 6
+            }
+          ],
+          "id": "4f05da3a-02e8-426e-aa16-f4e9c8f23233",
+          "text": "My Portfolio",
+          "sortIndex": 1
+        },
+        {
+          "bookmarks": [
+            {
+              "href": "https://google.com/maps",
+              "icon": 1090,
+              "iconColor": "#f92424",
+              "openInNewTab": true,
+              "id": "79399d57-6980-4b41-b4a6-6ea017a38a8a",
+              "text": "Google Maps",
+              "sortIndex": 1
+            },
+            {
+              "href": "https://tpwd.texas.gov/state-parks/",
+              "icon": 1791,
+              "iconColor": "#2942ff",
+              "openInNewTab": true,
+              "id": "1839fdad-4eae-488f-aee5-cba9aa166645",
+              "text": "Texas State Parks",
+              "sortIndex": 2
+            },
+            {
+              "href": "http://home.larryhouse.net:1836/",
+              "icon": 1492,
+              "iconColor": "#f00505",
+              "openInNewTab": true,
+              "id": "34079e8e-e98e-48dd-bc0f-715f00313129",
+              "text": "Texas State Parks List",
+              "sortIndex": 3
+            }
+          ],
+          "id": "372e4f7b-d6c1-41a2-bc9a-cc663bf97af8",
+          "text": "Locations",
+          "sortIndex": 2
+        },
+        {
+          "bookmarks": [
+            {
+              "href": "https://www.mpb.com/en-us",
+              "icon": 147,
+              "iconColor": "#003144",
+              "openInNewTab": true,
+              "id": "2264c51b-910e-42ac-9a18-9071d0e05d77",
+              "text": "MPB",
+              "sortIndex": 1
+            },
+            {
+              "href": "https://www.bhphotovideo.com/",
+              "icon": 147,
+              "iconColor": "#9f2f23",
+              "openInNewTab": true,
+              "id": "c3b1d70d-596b-4028-95d3-2ea704ac5274",
+              "text": "B\u0026H Photo",
+              "sortIndex": 2
+            },
+            {
+              "href": "https://fortworthcamera.com/",
+              "icon": 147,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "5eef712c-d6ed-4b99-a16d-3490107428a9",
+              "text": "Fort Worth Camera",
+              "sortIndex": 3
+            },
+            {
+              "href": "https://arlingtoncamera.com/",
+              "icon": 147,
+              "iconColor": "#21bde4",
+              "openInNewTab": true,
+              "id": "1040850f-7423-41ce-b861-1f44fb0a16fc",
+              "text": "Arlington Camera",
+              "sortIndex": 4
+            },
+            {
+              "href": "https://www.amazon.com/",
+              "icon": 19,
+              "iconColor": "#ff9900",
+              "openInNewTab": true,
+              "id": "aed8faff-cdc2-4e40-86c5-38e61ed98595",
+              "text": "Amazon",
+              "sortIndex": 5
+            },
+            {
+              "href": "https://simplycolorlab.com/",
+              "icon": 1527,
+              "iconColor": "#ababab",
+              "openInNewTab": true,
+              "id": "99af1d08-840c-4a84-b203-6ca7652da78d",
+              "text": "Simply Color Lab",
+              "sortIndex": 6
+            },
+            {
+              "href": "https://www.printique.com/",
+              "icon": 1527,
+              "iconColor": "#ababab",
+              "openInNewTab": true,
+              "id": "9d893649-1e36-4e61-b871-e0296b2635f1",
+              "text": "Printique",
+              "sortIndex": 7
+            }
+          ],
+          "id": "405eb9f9-1dae-4640-a314-fe6b98a56ac9",
+          "text": "Shopping",
+          "sortIndex": 3
+        },
+        {
+          "bookmarks": [
+            {
+              "href": "https://www.marchaydon.co.uk/",
+              "icon": 378,
+              "iconColor": "#80ffff",
+              "openInNewTab": true,
+              "id": "507cd199-a509-4841-aa80-66865d0ed3e1",
+              "text": "Marc Haydon",
+              "sortIndex": 1
+            },
+            {
+              "href": "https://www.louiselister.com/",
+              "icon": 378,
+              "iconColor": "#80ffff",
+              "openInNewTab": true,
+              "id": "a40af869-54b1-42c1-9621-fe5917d6348b",
+              "text": "Louise Lister",
+              "sortIndex": 2
+            },
+            {
+              "href": "https://wyman-meinzer.squarespace.com/",
+              "icon": 1791,
+              "iconColor": "#4589f7",
+              "openInNewTab": true,
+              "id": "2393a39e-62b0-4cc4-93e6-8ee754a389fd",
+              "text": "Wyman Meinzer",
+              "sortIndex": 3
+            },
+            {
+              "href": "https://www.nigeldanson.com/",
+              "icon": 378,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "06abc200-34b9-400a-9053-bff20fba4181",
+              "text": "Nigel Danson",
+              "sortIndex": 4
+            },
+            {
+              "href": "https://markdenneyphotography.com/",
+              "icon": 378,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "78fa5631-25c0-4e3b-bcc1-c2fa6552bbf5",
+              "text": "Mark Denny",
+              "sortIndex": 5
+            },
+            {
+              "href": "https://www.jamespopsys.com/",
+              "icon": 378,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "b947f144-dad3-4134-bf9c-d71270162453",
+              "text": "James Popsys",
+              "sortIndex": 6
+            },
+            {
+              "href": "https://www.henryturnerphotography.co.uk/",
+              "icon": 378,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "d020b426-2cfd-4a0d-bea8-c853aad37c55",
+              "text": "Henry Turner",
+              "sortIndex": 7
+            },
+            {
+              "href": "https://www.simondentremont.com/",
+              "icon": 378,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "11e05d70-2b6b-440d-a6d7-46a85e8a4228",
+              "text": "Simon d\u0027Entremont",
+              "sortIndex": 8
+            },
+            {
+              "href": "https://www.joshuapeg.com/",
+              "icon": 378,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "7f718223-668e-4c5c-aa9a-0f30acc5e5bf",
+              "text": "Joshua Peg",
+              "sortIndex": 9
+            },
+            {
+              "href": "https://www.chrisorangephotography.com/",
+              "icon": 378,
+              "iconColor": "#e4812f",
+              "openInNewTab": true,
+              "id": "cb78bafb-4fa9-4a8b-a8ee-ddf7a3771323",
+              "text": "Chris Orange",
+              "sortIndex": 10
+            },
+            {
+              "href": "https://benjaminhardman.com/",
+              "icon": 378,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "edc59818-92b5-4b51-a553-d34e14ed5514",
+              "text": "Benjamin Hardman",
+              "sortIndex": 11
+            },
+            {
+              "href": "http://www.mattbarnesphotography.com/",
+              "icon": 378,
+              "iconColor": "#ff0080",
+              "openInNewTab": true,
+              "id": "6f39abc1-303b-470a-b9f8-90ad63b0847f",
+              "text": "Matt Barnes",
+              "sortIndex": 12
+            }
+          ],
+          "id": "f3045326-8bbb-4f18-bffb-04711784ab8c",
+          "text": "Favorite Photographers",
+          "sortIndex": 4
+        },
+        {
+          "bookmarks": [
+            {
+              "href": "https://stellarium-web.org/",
+              "icon": 1342,
+              "iconColor": "#f00f0f",
+              "openInNewTab": true,
+              "id": "b906e3d8-c757-4358-b57a-530462521fff",
+              "text": "Stellarium Web",
+              "sortIndex": 1
+            },
+            {
+              "href": "https://app.photoephemeris.com/",
+              "icon": 1830,
+              "iconColor": "#f5b324",
+              "openInNewTab": true,
+              "id": "2c3a1b4b-c83f-445a-9bfd-68b1dc97bf4a",
+              "text": "Photo Ephemeris",
+              "sortIndex": 2
+            },
+            {
+              "href": "https://smokymountains.com/fall-foliage-map/",
+              "icon": 379,
+              "iconColor": "#ff421c",
+              "openInNewTab": true,
+              "id": "0748df95-9244-420b-82cc-44c6668fcd59",
+              "text": "Smoky Mountains Fall Foliage Map",
+              "sortIndex": 3
+            },
+            {
+              "href": "https://www.naturettl.com/",
+              "icon": 1283,
+              "iconColor": "#abe274",
+              "openInNewTab": true,
+              "id": "309deb5f-685e-4b7a-a812-fe98e465b4e7",
+              "text": "Nature TTL",
+              "sortIndex": 4
+            },
+            {
+              "href": "https://skyandtelescope.org/",
+              "icon": 1791,
+              "iconColor": "#5edef7",
+              "openInNewTab": true,
+              "id": "0345fdc4-b3c6-4184-92d6-60cac7fce785",
+              "text": "Sky \u0026 Telescope",
+              "sortIndex": 5
+            },
+            {
+              "href": "https://www.astronomy.com/",
+              "icon": 1794,
+              "iconColor": "#f61313",
+              "openInNewTab": true,
+              "id": "0a4c81d4-4fa3-4e26-a940-6fbcd41402b0",
+              "text": "Astronomy Magazine",
+              "sortIndex": 6
+            },
+            {
+              "href": "https://www.photonstophotos.net/",
+              "icon": 378,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "edd3a8da-e58f-4663-b8df-19fa7445420b",
+              "text": "Photons to Photos",
+              "sortIndex": 7
+            },
+            {
+              "href": "https://nova.astrometry.net/upload",
+              "icon": 1793,
+              "iconColor": "#c42121",
+              "openInNewTab": true,
+              "id": "2a793664-38e6-46c1-bcd1-c0d33a70efc8",
+              "text": "Astrometry",
+              "sortIndex": 8
+            },
+            {
+              "href": "https://www.nationalparksatnight.com/",
+              "icon": 1342,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "286c4281-4a40-434a-b090-51888f2dc4cc",
+              "text": "National Parks @ NIght",
+              "sortIndex": 9
+            },
+            {
+              "href": "https://www.meteoblue.com/en/weather/outdoorsports/seeing/haslet_united-states_4696605",
+              "icon": 1342,
+              "iconColor": "#1a79c1",
+              "openInNewTab": true,
+              "id": "55581c7c-856f-467c-bf42-7b721d66374f",
+              "text": "meteoblue - Astronomy Seeing",
+              "sortIndex": 10
+            },
+            {
+              "href": "https://www.peerspace.com/pages/listings/63c8a65c2f9455000e76e234",
+              "icon": 1283,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "45fbc609-2fa3-49c6-ba18-094c4f18b3b8",
+              "text": "Peer Space - Studio Space",
+              "sortIndex": 11
+            },
+            {
+              "href": "https://www.the-aop.org/",
+              "icon": 378,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "9e774770-7157-4427-9cd2-2ae14a154c2e",
+              "text": "Association of Photographers",
+              "sortIndex": 12
+            },
+            {
+              "href": "https://www.midjourney.com/",
+              "icon": 1283,
+              "iconColor": "#797777",
+              "openInNewTab": true,
+              "id": "86d8f7db-e236-4478-9258-f024dbc4d5ca",
+              "text": "Mid Journey",
+              "sortIndex": 13
+            }
+          ],
+          "id": "3b7d282a-a611-4f4a-8df3-2f19ff23e52d",
+          "text": "Resources",
+          "sortIndex": 5
+        },
+        {
+          "bookmarks": [
+            {
+              "href": "https://www.wunderground.com/",
+              "icon": 611,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "c5d2ea9f-d30b-4f3c-944d-845ffeb87cd4",
+              "text": "Wunderground",
+              "sortIndex": 1
+            },
+            {
+              "href": "https://www.accuweather.com/",
+              "icon": 611,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "66a9c5e5-3c9b-48b6-8799-36215017ee84",
+              "text": "AccuWeather",
+              "sortIndex": 2
+            },
+            {
+              "href": "https://www.weather.com/",
+              "icon": 611,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "360b1cab-ee80-4dfa-8d1f-6123cd97c708",
+              "text": "Weather.com",
+              "sortIndex": 3
+            },
+            {
+              "href": "https://www.lightningmaps.org/",
+              "icon": 589,
+              "iconColor": "#ffffff",
+              "openInNewTab": true,
+              "id": "f84e898a-e675-4c5d-8efd-12e4884eeb5e",
+              "text": "Lightning Maps",
+              "sortIndex": 4
+            },
+            {
+              "href": "https://www.astrospheric.com/?Latitude=32.862808227539\u0026Longitude=-97.342468261719\u0026Loc=Forecast",
+              "icon": 1342,
+              "iconColor": "#f00f0f",
+              "openInNewTab": true,
+              "id": "a64aba3c-73ff-4d2d-b338-7c791dbe494f",
+              "text": "Astropheric",
+              "sortIndex": 5
+            },
+            {
+              "href": "https://www.lightpollutionmap.info/#zoom=5.35\u0026lat=32.7154\u0026lon=-99.6730",
+              "icon": 1342,
+              "iconColor": "#f00f0f",
+              "openInNewTab": true,
+              "id": "d757b2ae-5d25-4d4b-8c1a-158d40f2cb02",
+              "text": "Light Pollution Map",
+              "sortIndex": 6
+            },
+            {
+              "href": "https://clearoutside.com/forecast/32.88/-97.29",
+              "icon": 1342,
+              "iconColor": "#f00f0f",
+              "openInNewTab": true,
+              "id": "64fb835b-01a0-4ef9-a3a2-96d72369a712",
+              "text": "Clear Outside",
+              "sortIndex": 7
+            },
+            {
+              "href": "https://sunsetwx.com/",
+              "icon": 1830,
+              "iconColor": "#ff8040",
+              "openInNewTab": true,
+              "id": "0f9d3786-6cd1-4e0b-9595-3f8dcb9bb652",
+              "text": "Sunset Wx ",
+              "sortIndex": 8
+            },
+            {
+              "href": "https://www.timeanddate.com/sun/usa/fort-worth",
+              "icon": 1833,
+              "iconColor": "#fec641",
+              "openInNewTab": true,
+              "id": "3ebd8094-dd6b-49a3-b04d-411429cd4a10",
+              "text": "Sunrise/Sunset",
+              "sortIndex": 9
+            }
+          ],
+          "id": "50966b96-05dd-44ad-b872-7f1ba3d85a77",
+          "text": "Weather",
+          "sortIndex": 6
+        }
+      ],
+      "id": "fc3db3d9-28dd-45ee-a260-7a33e5300de0",
+      "text": "Photography",
+      "sortIndex": 2
+    },
+    {
+      "slug": "food",
+      "groups": [
+        {
+          "bookmarks": [
+            {
+              "href": "https://www.lenkaslens.com/",
+              "icon": 378,
+              "iconColor": "#f047ea",
+              "openInNewTab": true,
+              "id": "99303957-ce45-4289-b552-95f75e2b4dab",
+              "text": "Lenka Selinger | Lenka\u0027s Lens",
+              "sortIndex": 1
+            },
+            {
+              "href": "https://ourfoodstories.com/",
+              "icon": 378,
+              "iconColor": "#ea76f9",
+              "openInNewTab": true,
+              "id": "e6e9e99c-4484-47da-a061-6228efb2a823",
+              "text": "Laura Muthesius | Our Food Stories",
+              "sortIndex": 2
+            },
+            {
+              "href": "https://skylerburtphotography.com/",
+              "icon": 378,
+              "iconColor": "#4993f3",
+              "openInNewTab": true,
+              "id": "fb595168-7ec4-4082-9062-7496bf3e3ed1",
+              "text": "Skyler Burt",
+              "sortIndex": 3
+            },
+            {
+              "href": "https://joaniesimon.com/",
+              "icon": 378,
+              "iconColor": "#ef5af2",
+              "openInNewTab": true,
+              "id": "4ac554d4-1a8a-480e-bfb8-7fe0f26fbbea",
+              "text": "Joanie Simon",
+              "sortIndex": 4
+            },
+            {
+              "href": "https://www.marydevinat.com/",
+              "icon": 378,
+              "iconColor": "#f967de",
+              "openInNewTab": true,
+              "id": "b7db493e-c1d8-4880-a84a-98968b9089f3",
+              "text": "Mary Devinat",
+              "sortIndex": 5
+            },
+            {
+              "href": "https://dennistheprescott.com/",
+              "icon": 378,
+              "iconColor": "#5198f5",
+              "openInNewTab": true,
+              "id": "acf57b1f-87e1-4d12-8d84-ff6db0e430c7",
+              "text": "Dennis Prescott",
+              "sortIndex": 6
+            },
+            {
+              "href": "https://thelittleplantation.co.uk/",
+              "icon": 378,
+              "iconColor": "#dd6df3",
+              "openInNewTab": true,
+              "id": "0105fe2b-15c8-4406-8b25-9ccb9e8d9f05",
+              "text": "The Little Plantation | Kimberly Espinel",
+              "sortIndex": 7
+            }
+          ],
+          "id": "61c2da54-2642-4a0d-8bd4-6fa23955ecb6",
+          "text": "Favorites",
+          "sortIndex": 1
+        },
+        {
+          "bookmarks": [
+            {
+              "href": "https://community.thebiteshot.com/",
+              "icon": 1037,
+              "iconColor": "#a1a1a1",
+              "openInNewTab": true,
+              "id": "86e1237b-80d3-4d58-904f-84872ead63cb",
+              "text": "The Bite Shot Community",
+              "sortIndex": 1
+            },
+            {
+              "href": "https://52frames.com/",
+              "icon": 1037,
+              "iconColor": "#8f8f8f",
+              "openInNewTab": true,
+              "id": "2406acc1-11bb-422c-ada6-321eff6fc574",
+              "text": "52Frames",
+              "sortIndex": 2
+            }
+          ],
+          "id": "5a7d11d9-6dae-4632-8424-100ca99fcc98",
+          "text": "Communities",
+          "sortIndex": 2
+        },
+        {
+          "bookmarks": [
+            {
+              "href": "https://pinchofyum.com/",
+              "icon": 1593,
+              "iconColor": "#ff8040",
+              "openInNewTab": true,
+              "id": "da58d561-4e55-46e5-8861-dbd3ac1bebf6",
+              "text": "Pinch of Yum",
+              "sortIndex": 1
+            },
+            {
+              "href": "https://www.halfbakedharvest.com/",
+              "icon": 1593,
+              "iconColor": "#ff8040",
+              "openInNewTab": true,
+              "id": "8eca873a-2d91-4cf4-a9e3-414a2b28286e",
+              "text": "Half Baked Harvest",
+              "sortIndex": 2
+            },
+            {
+              "href": "https://minimalistbaker.com/",
+              "icon": 1593,
+              "iconColor": "#ff8040",
+              "openInNewTab": true,
+              "id": "32876165-9b3f-4e06-9ee2-c2e89e4bb811",
+              "text": "Minimalist Baker",
+              "sortIndex": 3
+            },
+            {
+              "href": "https://smittenkitchen.com/",
+              "icon": 1593,
+              "iconColor": "#ff8040",
+              "openInNewTab": true,
+              "id": "88fb6b70-74ca-4458-bbe1-168a9e808c66",
+              "text": "Smitten Kitten",
+              "sortIndex": 4
+            },
+            {
+              "href": "https://www.loveandlemons.com/",
+              "icon": 1593,
+              "iconColor": "#ff8040",
+              "openInNewTab": true,
+              "id": "ca0c7a12-6134-44ed-915a-db837f2c1ce2",
+              "text": "Love \u0026 Lemons",
+              "sortIndex": 5
+            },
+            {
+              "href": "https://www.twopeasandtheirpod.com/",
+              "icon": 1593,
+              "iconColor": "#ff8040",
+              "openInNewTab": true,
+              "id": "0f8a909f-509b-459c-aedf-f41819c60d35",
+              "text": "Two Peas \u0026 Their Pod",
+              "sortIndex": 6
+            },
+            {
+              "href": "http://saucyphotographer.com",
+              "icon": 1593,
+              "iconColor": "#ff8040",
+              "openInNewTab": true,
+              "id": "631c8c5f-50e3-405f-911f-fcd515f70998",
+              "text": "Saucy Photographer",
+              "sortIndex": 7
+            }
+          ],
+          "id": "66aefd1b-ab08-41d3-854a-cfc571f1aef3",
+          "text": "Blogs",
+          "sortIndex": 3
+        }
+      ],
+      "id": "10d61812-6fc9-45e6-9b11-7fdb464195f5",
+      "text": "Food",
+      "sortIndex": 3
+    },
+    {
+      "slug": "Home",
+      "groups": [
+        {
+          "bookmarks": [
+            {
+              "href": "https://fwmyh2o.smartcmobile.com/portal/Dashboard.aspx",
+              "icon": 735,
+              "iconColor": "#5c88f0",
+              "openInNewTab": true,
+              "id": "b543fd0d-335a-44d8-ae79-e41b9b653a04",
+              "text": "Water | City of Fort Worth",
+              "sortIndex": 1
+            },
+            {
+              "href": "https://www.spectrum.net/account-summary",
+              "icon": 2013,
+              "iconColor": "#bbbbbb",
+              "openInNewTab": true,
+              "id": "c28cb659-6fbe-47aa-bddb-55553d30125b",
+              "text": "Internet | Spectrum",
+              "sortIndex": 2
+            },
+            {
+              "href": "https://www.atmosenergy.com/",
+              "icon": 1046,
+              "iconColor": "#8dc0f7",
+              "openInNewTab": true,
+              "id": "44e10bb2-6f62-4f35-aab5-c8da005c9bb3",
+              "text": "Gas | Atmos Energy",
+              "sortIndex": 3
+            },
+            {
+              "href": "https://coserv.smarthub.coop/",
+              "icon": 1278,
+              "iconColor": "#e2f198",
+              "openInNewTab": true,
+              "id": "f2963d07-fd43-4773-8300-f6269af2c8a3",
+              "text": "Electricity | CoServ",
+              "sortIndex": 4
+            },
+            {
+              "href": "https://myaccount.wcicustomer.com/dashboard",
+              "icon": 1922,
+              "iconColor": "#bbbbbb",
+              "openInNewTab": true,
+              "id": "dc8dbec7-7282-4d7a-a377-4724d3c63eea",
+              "text": "Trash | Waste Connections",
+              "sortIndex": 5
+            }
+          ],
+          "id": "20338878-46b0-4eb7-ba46-ae0ab36005c8",
+          "text": "Utilities",
+          "sortIndex": 1
+        },
+        {
+          "bookmarks": [
+            {
+              "href": "https://engage.goenumerate.com/s/wildflowerranch/home.php",
+              "icon": 1053,
+              "iconColor": "#e6a48e",
+              "openInNewTab": true,
+              "id": "ba88fb15-2bbe-4591-a720-cfedff28c3ba",
+              "text": "Wildflower Ranch Community (Engage)",
+              "sortIndex": 1
+            }
+          ],
+          "id": "e41db6fd-22bc-49c8-9395-cad530d544ca",
+          "text": "HOA",
+          "sortIndex": 2
+        }
+      ],
+      "id": "d076953f-3b6e-4710-9f11-eedc017b5a1b",
+      "text": "Home",
+      "sortIndex": 1
+    }
+  ],
+  "slug": "garage",
+  "defaultPage": "start",
+  "id": "20fc50b7-9f72-40fc-a2d8-d2a7753b3bfe",
+  "text": "Garage",
+  "sortIndex": 2
+}

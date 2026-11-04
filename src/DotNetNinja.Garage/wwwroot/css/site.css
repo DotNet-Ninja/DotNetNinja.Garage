@@ -1,31 +1,379 @@
-html {
-  font-size: 14px;
+:root {
+  --garage-bg: #0c1014;
+  --garage-border: #2b333b;
+  --garage-text: #f5f7f9;
+  --garage-muted: #aab4c0;
+  --garage-red: #f22532;
+  --garage-yellow: #ffc52b;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
+html { min-height: 100%; }
+
+body.garage-shell {
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--garage-bg);
+  color: var(--garage-text);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.site-header,
+.site-footer {
+  background: #10151a;
+  border: 0 solid var(--garage-border);
+}
+
+.site-header { border-bottom-width: 1px; }
+.site-footer { border-top-width: 1px; padding: 1.25rem 0; }
+.site-main {
+  flex: 1;
+  background:
+    radial-gradient(ellipse at 82% 8%, rgba(124, 30, 37, .2), transparent 42%),
+    radial-gradient(ellipse at 12% 78%, rgba(39, 58, 72, .38), transparent 48%),
+    linear-gradient(145deg, #171e25 0%, #10161b 48%, #0b0f13 100%);
+}
+
+.site-main-bleed { background: var(--garage-bg); }
+
+.home-hero {
+  min-height: calc(100vh - 9.5rem - 20px);
+  min-height: calc(100dvh - 9.5rem - 20px);
+  display: flex;
+  align-items: center;
+  background:
+    linear-gradient(90deg, rgba(8, 12, 16, .96) 0%, rgba(8, 12, 16, .82) 27%, rgba(8, 12, 16, .32) 52%, rgba(8, 12, 16, .04) 76%),
+    url('/images/cadillac-racing-home.png') center center / cover no-repeat;
+}
+
+.home-content {
+  width: min(100%, 36rem);
+  margin: 4rem clamp(1.25rem, 4vw, 4rem);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, .65);
+}
+
+.home-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin-bottom: 1rem;
+  color: var(--garage-yellow);
+  font-size: .8rem;
+  font-weight: 800;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.home-eyebrow span { width: 1.6rem; height: .2rem; background: var(--garage-red); transform: skew(-20deg); }
+
+.home-hero h1 {
+  margin-bottom: 1.25rem;
+  color: #fff;
+  font-size: clamp(3.4rem, 5.8vw, 6rem);
+  font-weight: 900;
+  line-height: .98;
+  letter-spacing: -.065em;
+}
+
+.home-hero h1 em { color: var(--garage-red); font-style: italic; }
+.home-description { max-width: 31rem; color: #d8e0e8; font-size: 1.15rem; line-height: 1.55; }
+.home-actions { margin-top: 1.8rem; }
+.home-actions .btn { font-weight: 700; padding-inline: 1.5rem; }
+.home-actions .btn i { margin-right: .4rem; }
+.home-actions .btn:disabled { opacity: .75; }
+.home-login-status { margin-top: .75rem; color: var(--garage-muted); font-size: .875rem; }
+
+.account-content {
+  width: min(100%, 34rem);
+  margin: 4rem clamp(1.25rem, 4vw, 4rem);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, .6);
+}
+
+.account-hero h1 {
+  margin-bottom: .8rem;
+  font-size: clamp(3rem, 5vw, 5rem);
+  font-style: italic;
+}
+
+.account-description { color: #d8e0e8; font-size: 1.1rem; }
+
+.account-details {
+  margin-top: 2rem;
+  padding: 1.2rem 1.4rem 1.4rem;
+  border: 1px solid rgba(208, 219, 229, .24);
+  border-radius: .7rem;
+  background: rgba(13, 19, 25, .84);
+  box-shadow: 0 1.25rem 3rem rgba(0, 0, 0, .32);
+  backdrop-filter: blur(12px);
+  text-shadow: none;
+}
+
+.account-details-heading {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: .3rem;
+  color: #99a7b5;
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+
+.account-details-heading span { color: var(--garage-red); font-size: 1rem; letter-spacing: -.14em; }
+.account-details dl { margin: 0; }
+.account-detail-row { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 1rem; padding: .9rem 0; border-top: 1px solid rgba(208, 219, 229, .14); }
+.account-detail-row dt { color: var(--garage-muted); font-weight: 500; }
+.account-detail-row dt i { margin-right: .4rem; }
+.account-detail-row dd { margin: 0; color: #fff; font-weight: 600; overflow-wrap: anywhere; }
+.account-logout { padding-top: 1.1rem; border-top: 1px solid rgba(208, 219, 229, .14); }
+.account-logout .btn { min-width: 9rem; font-weight: 700; }
+.account-logout .btn i { margin-right: .35rem; }
+.account-claims-link { display: inline-block; margin-top: 1rem; font-size: .875rem; }
+
+.about-card {
+  width: min(34rem, calc(100% - 2.5rem));
+  margin: 4rem clamp(1.25rem, 4vw, 4rem);
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  border: 1px solid rgba(208, 219, 229, .24);
+  border-radius: .8rem;
+  background: rgba(13, 19, 25, .78);
+  box-shadow: 0 1.25rem 3rem rgba(0, 0, 0, .35);
+  backdrop-filter: blur(12px);
+}
+
+.about-card h1 { margin: 0 0 .5rem; color: #fff; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 850; font-style: italic; letter-spacing: -.06em; }
+.about-description { color: #d8e0e8; font-size: 1.05rem; }
+.about-version { display: grid; gap: .35rem; margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid rgba(208, 219, 229, .18); }
+.about-version span { color: var(--garage-muted); font-size: .75rem; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
+.about-version strong { color: #fff; font-size: 1rem; font-weight: 650; overflow-wrap: anywhere; }
+.database-card { width: min(40rem, calc(100% - 2.5rem)); }
+.database-pending { margin-top: 1.5rem; }
+.database-pending h2 { color: var(--garage-muted); font-size: .8rem; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; }
+.database-pending ul { max-height: 15rem; margin: 1rem 0 1.5rem; padding-left: 1.5rem; overflow: auto; }
+.database-pending li { margin-bottom: .5rem; overflow-wrap: anywhere; }
+.database-pending code { color: #fff; }
+.database-current { margin: 1.5rem 0 0; color: #d8e0e8; }
+
+.pages-content { display: block; padding: 2rem clamp(1.25rem, 4vw, 4rem); }
+.pages-content .page-title { margin-bottom: 1.1rem; color: var(--garage-yellow); font-size: clamp(1.8rem, 3vw, 3.1rem); font-weight: 700; line-height: 1.1; letter-spacing: -.03em; }
+.pages-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); align-items: stretch; gap: 1rem; }
+.page-group {
+  padding: 1rem;
+  border-radius: .8rem;
+  background:
+    linear-gradient(135deg, rgba(210, 220, 230, .15), rgba(120, 140, 155, .06) 28%, transparent 62%),
+    rgba(13, 19, 25, .8);
+  box-shadow: inset 0 1px 0 rgba(235, 242, 248, .18), 0 1rem 2.5rem rgba(0, 0, 0, .24);
+  backdrop-filter: blur(10px);
+}
+.page-group h2 { margin: 0 0 .7rem; color: #fff; font-size: 1.1rem; font-weight: 750; }
+.page-group-empty { margin: 0; color: var(--garage-muted); }
+.page-links { margin: 0; padding: 0; list-style: none; }
+.page-links li + li { margin-top: .2rem; }
+.page-links a { display: flex; align-items: center; gap: .7rem; padding: .3rem .25rem; border-radius: .35rem; color: #e6edf3; text-decoration: none; overflow-wrap: anywhere; }
+.page-links a:hover, .page-links a:focus-visible { background: rgba(255, 255, 255, .07); color: #fff; }
+.page-link-icon { display: inline-flex; width: 1.3rem; flex: 0 0 1.3rem; justify-content: center; font-size: 1.1rem; }
+
+.page-heading { display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
+.page-heading .page-title { margin-bottom: 1.1rem; }
+.page-edit-toolbar { display: flex; flex-wrap: wrap; align-items: start; gap: .75rem; margin: 0 0 1rem; }
+.edit-disclosure, .edit-panel, .add-group-panel {
+  border-radius: .65rem;
+  background: rgba(13, 19, 25, .92);
+  box-shadow: inset 0 1px 0 rgba(235, 242, 248, .14), 0 .75rem 1.8rem rgba(0, 0, 0, .2);
+}
+.page-edit-toolbar > .edit-disclosure { min-width: min(100%, 16rem); padding: .7rem .9rem; }
+.edit-disclosure > summary, .edit-confirm > summary { cursor: pointer; color: #e6edf3; font-weight: 650; }
+.edit-disclosure[open] > summary, .edit-confirm[open] > summary { margin-bottom: .8rem; }
+.edit-form { display: grid; gap: .45rem; max-width: 28rem; }
+.garage-edit-dialog { background: #151b22; border: 1px solid rgba(235, 242, 248, .18); box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, .55); }
+.garage-edit-dialog .modal-body .edit-form { max-width: none; }
+.garage-edit-dialog .modal-header { border-bottom-color: rgba(235, 242, 248, .14); }
+.edit-form label { color: #d8e0e8; font-size: .85rem; font-weight: 600; }
+.edit-form small { color: var(--garage-muted); }
+.edit-form .btn { justify-self: start; margin-top: .4rem; }
+.edit-form .edit-check { display: flex; align-items: center; gap: .5rem; margin: .35rem 0; }
+.edit-icon-preview { display: flex; align-items: center; gap: .5rem; color: var(--garage-muted); font-size: .8rem; }
+.edit-icon-preview i { color: #fff; font-size: 1.2rem; }
+.edit-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; margin-top: .8rem; }
+.edit-confirm { margin-top: .8rem; color: #d8e0e8; }
+.edit-confirm p { max-width: 28rem; margin: .5rem 0; font-size: .85rem; }
+.edit-panel { max-width: 34rem; margin: 0 0 1rem; padding: 1rem; }
+.edit-panel h2 { margin: 0 0 .8rem; color: #fff; font-size: 1.1rem; }
+.edit-hint { margin: .3rem 0 1rem; color: #d8e0e8; font-size: .85rem; }
+.page-group-heading { display: flex; align-items: start; justify-content: space-between; gap: .5rem; }
+.page-group-heading h2 { margin-bottom: .55rem; }
+.group-actions { margin: 0 0 .6rem; }
+.group-actions .btn { padding: .2rem .45rem; font-size: .75rem; }
+.pages-editing .page-group { min-width: 0; }
+.edit-link-row { display: flex; align-items: center; gap: .45rem; min-height: 2rem; }
+.edit-link-row .edit-link-title { min-width: 0; flex: 1; overflow-wrap: anywhere; }
+.edit-link-row > a:not(.btn) { color: var(--garage-muted); }
+.link-drag-handle { padding: .1rem .2rem; border: 0; border-radius: .3rem; background: transparent; color: var(--garage-muted); cursor: grab; touch-action: none; }
+.link-drag-handle:active { cursor: grabbing; }
+body.is-dragging-link, body.is-dragging-link * { cursor: grabbing !important; user-select: none; }
+.link-drag-handle:focus-visible, .page-links a:focus-visible { outline: 2px solid var(--garage-yellow); outline-offset: 2px; }
+.edit-link-controls { margin: .1rem 0 .45rem 1.3rem; padding: .1rem .4rem; font-size: .8rem; }
+.edit-link-controls[open] { padding: .45rem .6rem; }
+.edit-link-controls .edit-actions { margin-top: .3rem; }
+.edit-add-link { margin-top: .65rem; }
+.add-group-panel { width: fit-content; min-width: min(100%, 18rem); margin-top: 1rem; padding: .8rem 1rem; }
+.page-group.drop-target { box-shadow: inset 0 0 0 2px var(--garage-yellow), 0 1rem 2.5rem rgba(0, 0, 0, .24); }
+.page-links li.drop-before { box-shadow: inset 0 2px 0 var(--garage-yellow); }
+.page-links li.drop-after { box-shadow: inset 0 -2px 0 var(--garage-yellow); }
+.page-links li.drag-source { opacity: .55; }
+.pages-editing.is-saving { cursor: progress; }
+
+.error-hero {
+  min-height: calc(100vh - 9.5rem - 20px);
+  min-height: calc(100dvh - 9.5rem - 20px);
+  display: flex;
+  align-items: center;
+  background:
+    linear-gradient(90deg, rgba(8, 12, 16, .98) 0%, rgba(8, 12, 16, .9) 24%, rgba(8, 12, 16, .5) 46%, rgba(8, 12, 16, .08) 72%),
+    url('/images/cadillac-racing-garage.png') center center / cover no-repeat;
+}
+
+.error-content {
+  width: min(100%, 34rem);
+  margin: 4rem clamp(1.25rem, 4vw, 4rem);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, .6);
+}
+
+.error-code {
+  margin: 0 0 -.6rem;
+  color: var(--garage-red);
+  font-size: clamp(4.5rem, 8vw, 7rem);
+  font-weight: 900;
+  font-style: italic;
+  line-height: 1;
+  letter-spacing: -.075em;
+}
+
+.error-hero h1 {
+  margin-bottom: 1.2rem;
+  color: #fff;
+  font-size: clamp(2.7rem, 4.2vw, 4.4rem);
+  font-weight: 850;
+  font-style: italic;
+  line-height: .98;
+  letter-spacing: -.055em;
+}
+
+.error-description {
+  max-width: 31rem;
+  color: #d5dce4;
+  font-size: 1.05rem;
+  line-height: 1.55;
+}
+
+.error-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1.6rem 0 2rem; }
+.error-actions .btn { font-weight: 650; box-shadow: 0 4px 18px rgba(0, 0, 0, .25); }
+.error-actions .btn i { margin-right: .35rem; }
+
+.error-diagnostics {
+  max-width: 27rem;
+  padding: 1rem 1.2rem .3rem;
+  border: 1px solid rgba(183, 200, 216, .22);
+  border-radius: .6rem;
+  background: rgba(16, 22, 28, .86);
+  backdrop-filter: blur(8px);
+}
+
+.error-diagnostics-heading {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: .5rem;
+  color: #99a7b5;
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.error-diagnostics-heading span { color: var(--garage-red); font-size: 1rem; letter-spacing: -.14em; }
+.error-diagnostic-row { display: grid; grid-template-columns: 1.5rem 1fr auto; gap: .65rem; align-items: center; padding: .7rem 0; border-top: 1px solid rgba(183, 200, 216, .12); color: #cbd4de; }
+.error-diagnostic-row strong { color: #fff; font-weight: 650; }
+.error-diagnostic-row .error-diagnostic-alert { color: var(--garage-red); }
+
+.garage-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  color: #fff;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.garage-brand:hover,
+.garage-brand:focus { color: #fff; }
+
+.garage-wordmark {
+  font-size: 1.65rem;
+  font-weight: 850;
+  font-style: italic;
+  letter-spacing: -.07em;
+  line-height: 1;
+}
+
+.garage-mark {
+  display: grid;
+  grid-template-columns: repeat(2, .55rem);
+  grid-template-rows: repeat(2, .45rem);
+  gap: .14rem;
+  transform: skew(-21deg);
+}
+
+.garage-mark span { background: var(--garage-red); }
+.garage-mark span:nth-child(3) { background: var(--garage-yellow); }
+.garage-mark span:nth-child(2) { transform: translateY(-.1rem); }
+.garage-mark span:nth-child(3) { transform: translateY(.1rem); }
+
+.navbar { min-height: 4.5rem; }
+.navbar .nav-link { color: var(--garage-muted); font-weight: 500; }
+.navbar .nav-link:hover,
+.navbar .nav-link:focus { color: #fff; }
+.navbar-toggler { border-color: var(--garage-border); }
+
+.garage-brand-footer .garage-wordmark { font-size: 1.25rem; }
+.garage-brand-footer .garage-mark { transform: skew(-21deg) scale(.8); transform-origin: left center; margin-right: -.2rem; }
+.footer-copyright,
+.footer-link { color: var(--garage-muted); font-size: .875rem; }
+.footer-link { text-decoration: none; }
+.footer-link:hover,
+.footer-link:focus { color: #fff; text-decoration: underline; }
+
+.btn-primary {
+  --bs-btn-bg: var(--garage-red);
+  --bs-btn-border-color: var(--garage-red);
+  --bs-btn-hover-bg: #d91e2b;
+  --bs-btn-hover-border-color: #d91e2b;
+  --bs-btn-active-bg: #bd1925;
+  --bs-btn-active-border-color: #bd1925;
+}
+
+a { color: #ff5c65; }
+a:hover { color: #ff8b91; }
+
+@media (max-width: 575.98px) {
+  .site-footer { padding: 1.5rem 0; }
+  .footer-identity { row-gap: .5rem !important; }
+  .error-hero {
+    align-items: flex-start;
+    background:
+      linear-gradient(180deg, rgba(8, 12, 16, .86), rgba(8, 12, 16, .75) 55%, rgba(8, 12, 16, .94)),
+      url('/images/cadillac-racing-garage.png') 58% center / cover no-repeat;
   }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-  margin-bottom: 60px;
-}
-
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
-}
-
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+  .error-content { margin: 3.5rem 1.25rem; }
+  .home-hero {
+    align-items: flex-start;
+    background:
+      linear-gradient(180deg, rgba(8, 12, 16, .88), rgba(8, 12, 16, .62) 55%, rgba(8, 12, 16, .9)),
+      url('/images/cadillac-racing-home.png') 60% center / cover no-repeat;
+  }
+  .home-content { margin: 4rem 1.25rem; }
+  .account-content { margin: 3.5rem 1.25rem; }
+  .account-detail-row { grid-template-columns: 1fr; gap: .2rem; }
+  .about-card { margin: 3rem 1.25rem; }
 }

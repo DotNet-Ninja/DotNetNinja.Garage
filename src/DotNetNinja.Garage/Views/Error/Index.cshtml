@@ -1,0 +1,28 @@
+@{
+    ViewData[ViewKey.Title] = "Something went wrong";
+    ViewData[ViewKey.FullBleed] = true;
+}
+
+<section class="error-hero" aria-labelledby="error-title">
+    <div class="error-content">
+        <p class="error-code">500 <span aria-hidden="true">—</span></p>
+        <h1 id="error-title">Looks like we<br />blew a gasket</h1>
+        <p class="error-description">
+            We tried to get this page across the finish line, but it spun out in Turn 3.
+            Our pit crew is on it. In the meantime, head back to the Garage or give it another lap.
+        </p>
+        <div class="error-actions">
+            <a class="btn btn-primary btn-lg" asp-controller="Home" asp-action="Index">
+                <i class="bi bi-house-fill" aria-hidden="true"></i> Back to Garage
+            </a>
+            <button class="btn btn-outline-light btn-lg" type="button" onclick="window.location.reload()">
+                <i class="bi bi-arrow-clockwise" aria-hidden="true"></i> Try Again
+            </button>
+        </div>
+        <div class="error-diagnostics" aria-label="Error details">
+            <div class="error-diagnostics-heading">Vehicle diagnostics <span aria-hidden="true">////</span></div>
+            <div class="error-diagnostic-row"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i><span>Status</span><strong>Unexpected error</strong></div>
+            <div class="error-diagnostic-row"><i class="bi bi-flag-fill" aria-hidden="true"></i><span>Lap result</span><strong class="error-diagnostic-alert">DNF</strong></div>
+        </div>
+    </div>
+</section>
