@@ -22,20 +22,23 @@
     var initialDialog = failedForm switch
     {
         "page-create" => "page-create-dialog",
-        "page-update" or "page-settings" or "page-delete" => "page-settings-dialog",
+        "page-update" or "page-settings" => "page-settings-dialog",
+        "page-delete" => "page-delete-dialog",
         "group-create" => "group-create-dialog",
         _ when selectedGroup is not null => "group-editor",
         _ when selectedLink is not null || newLinkGroup is not null => "link-editor",
+        _ when failedForm?.StartsWith("group-delete-") == true => failedForm + "-dialog",
+        _ when failedForm?.StartsWith("link-delete-") == true => failedForm + "-dialog",
         _ => null
     };
 }
 
-<section class="home-hero pages-content @(Model.IsEditing ? "pages-editing" : "")" aria-labelledby="page-title" data-move-url="@Url.Action("MoveLinkJson", "PageEdits")" data-initial-dialog="@initialDialog">
+<section class="home-hero pages-content @(Model.IsEditing ? "pages-editing" : "")" aria-labelledby="page-title" data-move-url="@Url.Action("MoveLinkJson", "PageEdits")" data-group-move-url="@Url.Action("ReorderGroupJson", "PageEdits")" data-initial-dialog="@initialDialog">
     <div class="page-heading">
         <h1 id="page-title" class="home-eyebrow page-title"><span aria-hidden="true"></span> @Model.Title</h1>
         @if (Model.IsEditing)
         {
-            <a class="btn btn-outline-light btn-sm" asp-route="page" asp-route-slug="@Model.Slug">Done</a>
+            <a class="btn btn-outline-light btn-sm" asp-route="page" asp-route-slug="@Model.Slug" aria-label="Done editing" title="Done editing"><icon key="XLg" /></a>
         }
         else
         {
@@ -56,6 +59,10 @@
         <div class="page-edit-toolbar">
             <button class="btn btn-outline-light btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#page-create-dialog"><icon key="PlusCircle" /> Page</button>
             <button class="btn btn-outline-light btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#page-settings-dialog"><icon key="GearFill" /></button>
+            @if (Model.CanDelete)
+            {
+                <button class="btn btn-outline-light btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#page-delete-dialog" aria-label="Delete page" title="Delete page"><icon key="Trash" /></button>
+            }
         </div>
         <div class="modal fade" id="page-create-dialog" tabindex="-1" aria-labelledby="page-create-title" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered"><div class="modal-content garage-edit-dialog">
@@ -76,7 +83,7 @@
             <div class="modal-dialog modal-dialog-centered"><div class="modal-content garage-edit-dialog">
                 <div class="modal-header"><h2 class="modal-title fs-5" id="page-settings-title">Page settings</h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
                 <div class="modal-body">
-                @if ((failedForm is "page-update" or "page-settings" or "page-delete") && errorMessage is not null) { <p class="alert alert-danger" role="alert">@errorMessage</p> }
+                @if ((failedForm is "page-update" or "page-settings") && errorMessage is not null) { <p class="alert alert-danger" role="alert">@errorMessage</p> }
                 <form asp-controller="PageEdits" asp-action="UpdatePage" method="post" class="edit-form">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="Id" value="@Model.Id" />
@@ -87,7 +94,14 @@
                     <label for="page-slug">URL slug</label>
                     <input id="page-slug" class="form-control" name="Slug" maxlength="128" required pattern="[a-z0-9]+(-[a-z0-9]+)*" value="@Posted("page-update", "Slug", Model.Slug)" />
                     <small>Changing the slug can break your saved bookmarks.</small>
-                    <div class="edit-actions"><button class="btn btn-primary btn-sm" type="submit">Save page</button><button class="btn btn-outline-light btn-sm" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                    <div class="edit-actions page-settings-actions">
+                        <button class="btn btn-primary btn-sm" type="submit">Save page</button>
+                        <button class="btn btn-outline-light btn-sm" type="button" data-bs-dismiss="modal">Cancel</button>
+                        <span class="page-order-actions">
+                            <button class="btn btn-outline-light btn-sm" type="submit" form="page-move-left" aria-label="Move page left" title="Move page left"><icon key="ChevronLeft" /></button>
+                            <button class="btn btn-outline-light btn-sm" type="submit" form="page-move-right" aria-label="Move page right" title="Move page right"><icon key="ChevronRight" /></button>
+                        </span>
+                    </div>
                 </form>
                 <div class="edit-actions">
                     @if (!Model.IsDefault)
@@ -98,31 +112,36 @@
                             <button class="btn btn-outline-light btn-sm" type="submit">Make default</button>
                         </form>
                     }
-                    @foreach (var direction in new[] { -1, 1 })
-                    {
-                        <form asp-controller="PageEdits" asp-action="MovePage" method="post">
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" name="id" value="@Model.Id" /><input type="hidden" name="revision" value="@Model.Revision" /><input type="hidden" name="direction" value="@direction" /><input type="hidden" name="returnSlug" value="@Model.Slug" />
-                            <button class="btn btn-outline-light btn-sm" type="submit">@(direction < 0 ? "Move page left" : "Move page right")</button>
-                        </form>
-                    }
                 </div>
-                @if (Model.CanDelete)
+                @foreach (var direction in new[] { -1, 1 })
                 {
-                    <details class="edit-confirm" open="@(failedForm == "page-delete" ? "open" : null)">
-                        <summary>Delete page</summary>
-                        <p>Delete <strong>@Model.Title</strong>, its @Model.Groups.Count groups, and @Model.Groups.Sum(group => group.TotalLinkCount) links? This cannot be undone.</p>
-                        <form asp-controller="PageEdits" asp-action="DeletePage" method="post">
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" name="id" value="@Model.Id" /><input type="hidden" name="revision" value="@Model.Revision" /><input type="hidden" name="returnSlug" value="@Model.Slug" />
-                            <button class="btn btn-danger btn-sm" type="submit">Confirm delete page</button>
-                        </form>
-                    </details>
+                    var directionName = direction < 0 ? "left" : "right";
+                    <form id="page-move-@directionName" asp-controller="PageEdits" asp-action="MovePage" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" /><input type="hidden" name="revision" value="@Model.Revision" /><input type="hidden" name="direction" value="@direction" /><input type="hidden" name="returnSlug" value="@Model.Slug" />
+                    </form>
                 }
                 </div>
             </div></div>
         </div>
-        <p class="edit-hint">Drag links by their handles to reorder or move them between groups. Move controls work with a keyboard.</p>
+        @if (Model.CanDelete)
+        {
+            <div class="modal fade" id="page-delete-dialog" tabindex="-1" aria-labelledby="page-delete-title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered"><div class="modal-content garage-edit-dialog">
+                    <div class="modal-header"><h2 class="modal-title fs-5" id="page-delete-title">Delete page</h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+                    <div class="modal-body">
+                        @if (failedForm == "page-delete" && errorMessage is not null) { <p class="alert alert-danger" role="alert">@errorMessage</p> }
+                        <p>Delete <strong>@Model.Title</strong>, its @Model.Groups.Count groups, and @Model.Groups.Sum(group => group.TotalLinkCount) links? This cannot be undone.</p>
+                        <form asp-controller="PageEdits" asp-action="DeletePage" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@Model.Id" /><input type="hidden" name="revision" value="@Model.Revision" /><input type="hidden" name="returnSlug" value="@Model.Slug" />
+                            <div class="edit-actions"><button class="btn btn-danger btn-sm" type="submit">Delete page</button><button class="btn btn-outline-light btn-sm" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                        </form>
+                    </div>
+                </div></div>
+            </div>
+        }
+        <p class="edit-hint">Drag groups or links by their handles to reorder them. Links can also move between groups.</p>
         <p id="edit-move-status" class="visually-hidden" role="status" aria-live="polite"></p>
         @if (selectedGroup is not null)
         {
@@ -191,32 +210,36 @@
             {
                 <section class="page-group" aria-label="@group.Title" data-group-id="@group.Id" data-group-revision="@group.Revision">
                     <div class="page-group-heading">
-                        <h2>@group.Title</h2>
+                        <h2>
+                            @if (Model.IsEditing)
+                            {
+                                <button type="button" class="group-drag-handle" data-group-drag-handle aria-label="Drag @group.Title group" title="Drag to reorder groups"><i class="bi bi-grip-vertical" aria-hidden="true"></i></button>
+                            }
+                            @group.Title
+                        </h2>
                         @if (Model.IsEditing)
                         {
-                            <a class="btn btn-outline-light btn-sm" asp-route="page" asp-route-slug="@Model.Slug" asp-route-edit="1" asp-route-editGroupId="@group.Id" asp-fragment="group-editor">Rename</a>
+                            <div class="edit-actions group-heading-actions">
+                                <a class="btn btn-outline-light btn-sm" asp-route="page" asp-route-slug="@Model.Slug" asp-route-edit="1" asp-route-editGroupId="@group.Id" asp-fragment="group-editor" aria-label="Rename @group.Title" title="Rename @group.Title"><icon key="PencilFill" /></a>
+                                <button class="btn btn-outline-light btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#group-delete-@group.Id-dialog" aria-label="Delete @group.Title" title="Delete @group.Title"><icon key="Trash" /></button>
+                            </div>
                         }
                     </div>
                     @if (Model.IsEditing)
                     {
-                        <div class="edit-actions group-actions">
-                            @foreach (var direction in new[] { -1, 1 })
-                            {
-                                <form asp-controller="PageEdits" asp-action="MoveGroup" method="post">
-                                    @Html.AntiForgeryToken()
-                                    <input type="hidden" name="id" value="@group.Id" /><input type="hidden" name="revision" value="@group.Revision" /><input type="hidden" name="direction" value="@direction" /><input type="hidden" name="returnSlug" value="@Model.Slug" />
-                                    <button class="btn btn-outline-light btn-sm" type="submit">@(direction < 0 ? "Move earlier" : "Move later")</button>
-                                </form>
-                            }
-                            <details class="edit-confirm" open="@(failedForm == $"group-delete-{group.Id}" ? "open" : null)">
-                                <summary>Delete group</summary>
+                        <div class="modal fade garage-delete-dialog" id="group-delete-@group.Id-dialog" tabindex="-1" aria-labelledby="group-delete-@group.Id-title" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered"><div class="modal-content garage-edit-dialog">
+                                <div class="modal-header"><h2 class="modal-title fs-5" id="group-delete-@group.Id-title">Delete group</h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+                                <div class="modal-body">
+                                    @if (failedForm == $"group-delete-{group.Id}" && errorMessage is not null) { <p class="alert alert-danger" role="alert">@errorMessage</p> }
                                     <p>Delete <strong>@group.Title</strong> and its @group.TotalLinkCount links? This cannot be undone.</p>
-                                <form asp-controller="PageEdits" asp-action="DeleteGroup" method="post">
-                                    @Html.AntiForgeryToken()
-                                    <input type="hidden" name="id" value="@group.Id" /><input type="hidden" name="revision" value="@group.Revision" /><input type="hidden" name="returnSlug" value="@Model.Slug" />
-                                    <button class="btn btn-danger btn-sm" type="submit">Confirm delete group</button>
-                                </form>
-                            </details>
+                                    <form asp-controller="PageEdits" asp-action="DeleteGroup" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@group.Id" /><input type="hidden" name="revision" value="@group.Revision" /><input type="hidden" name="returnSlug" value="@Model.Slug" />
+                                        <div class="edit-actions"><button class="btn btn-danger btn-sm" type="submit">Delete group</button><button class="btn btn-outline-light btn-sm" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                                    </form>
+                                </div>
+                            </div></div>
                         </div>
                     }
                     @if (group.Links.Count == 0 && !Model.IsEditing)
@@ -224,9 +247,8 @@
                         <p class="page-group-empty">No links yet.</p>
                     }
                     <ul class="page-links" data-link-list>
-                        @for (var linkIndex = 0; linkIndex < group.Links.Count; linkIndex++)
+                        @foreach (var link in group.Links)
                         {
-                            var link = group.Links[linkIndex];
                             <li data-link-id="@link.Id" data-link-revision="@link.Revision">
                                 @if (Model.IsEditing)
                                 {
@@ -238,51 +260,23 @@
                                         </span>
                                         <span class="edit-link-title">@link.Title</span>
                                         <a href="@link.Href" target="@(link.OpenInNewTab ? "_blank" : null)" rel="@(link.OpenInNewTab ? "noopener noreferrer" : null)" aria-label="Open @link.Title"><i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></a>
-                                        <a class="btn btn-outline-light btn-sm" asp-route="page" asp-route-slug="@Model.Slug" asp-route-edit="1" asp-route-editLinkId="@link.Id" asp-fragment="link-editor"><icon key="PencilFill"/></a>
+                                        <a class="btn btn-outline-light btn-sm" asp-route="page" asp-route-slug="@Model.Slug" asp-route-edit="1" asp-route-editLinkId="@link.Id" asp-fragment="link-editor" aria-label="Edit @link.Title" title="Edit @link.Title"><icon key="PencilFill"/></a>
+                                        <button class="btn btn-outline-light btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#link-delete-@link.Id-dialog" aria-label="Delete @link.Title" title="Delete @link.Title"><icon key="Trash" /></button>
                                     </div>
-                                    <details class="edit-disclosure edit-link-controls" open="@(failedForm is not null && failedForm.EndsWith($"-{link.Id}") ? "open" : null)">
-                                        <summary>Move or delete</summary>
-                                        <div class="edit-actions">
-                                            @foreach (var direction in new[] { -1, 1 })
-                            {
-                                                var position = linkIndex + direction;
-                                                <form asp-controller="PageEdits" asp-action="MoveLink" method="post">
+                                    <div class="modal fade garage-delete-dialog" id="link-delete-@link.Id-dialog" tabindex="-1" aria-labelledby="link-delete-@link.Id-title" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered"><div class="modal-content garage-edit-dialog">
+                                            <div class="modal-header"><h2 class="modal-title fs-5" id="link-delete-@link.Id-title">Delete link</h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+                                            <div class="modal-body">
+                                                @if (failedForm == $"link-delete-{link.Id}" && errorMessage is not null) { <p class="alert alert-danger" role="alert">@errorMessage</p> }
+                                                <p>Delete <strong>@link.Title</strong>? This cannot be undone.</p>
+                                                <form asp-controller="PageEdits" asp-action="DeleteLink" method="post">
                                                     @Html.AntiForgeryToken()
-                                                    <input type="hidden" name="LinkId" value="@link.Id" /><input type="hidden" name="LinkRevision" value="@link.Revision" />
-                                                    <input type="hidden" name="SourceGroupId" value="@group.Id" /><input type="hidden" name="SourceRevision" value="@group.Revision" />
-                                                    <input type="hidden" name="DestinationGroupId" value="@group.Id" /><input type="hidden" name="DestinationRevision" value="@group.Revision" />
-                                                    <input type="hidden" name="Position" value="@position" /><input type="hidden" name="returnSlug" value="@Model.Slug" />
-                                                    <button class="btn btn-outline-light btn-sm" type="submit" disabled="@(position < 0 || position >= group.Links.Count)">@(direction < 0 ? "Move earlier" : "Move later")</button>
+                                                    <input type="hidden" name="id" value="@link.Id" /><input type="hidden" name="revision" value="@link.Revision" /><input type="hidden" name="returnSlug" value="@Model.Slug" />
+                                                    <div class="edit-actions"><button class="btn btn-danger btn-sm" type="submit">Delete link</button><button class="btn btn-outline-light btn-sm" type="button" data-bs-dismiss="modal">Cancel</button></div>
                                                 </form>
-                                            }
-                                        </div>
-                                        @if (Model.Groups.Count > 1)
-                                        {
-                                            <details class="edit-confirm">
-                                                <summary>Move to another group</summary>
-                                                @foreach (var destination in Model.Groups.Where(item => item.Id != group.Id))
-                                                {
-                                                    <form asp-controller="PageEdits" asp-action="MoveLink" method="post">
-                                                        @Html.AntiForgeryToken()
-                                                        <input type="hidden" name="LinkId" value="@link.Id" /><input type="hidden" name="LinkRevision" value="@link.Revision" />
-                                                        <input type="hidden" name="SourceGroupId" value="@group.Id" /><input type="hidden" name="SourceRevision" value="@group.Revision" />
-                                                        <input type="hidden" name="DestinationGroupId" value="@destination.Id" /><input type="hidden" name="DestinationRevision" value="@destination.Revision" />
-                                                        <input type="hidden" name="Position" value="-1" /><input type="hidden" name="returnSlug" value="@Model.Slug" />
-                                                        <button class="btn btn-outline-light btn-sm my-1" type="submit">Move to @destination.Title</button>
-                                                    </form>
-                                                }
-                                            </details>
-                                        }
-                                        <details class="edit-confirm" open="@(failedForm == $"link-delete-{link.Id}" ? "open" : null)">
-                                            <summary>Delete link</summary>
-                                            <p>Delete <strong>@link.Title</strong>? This cannot be undone.</p>
-                                            <form asp-controller="PageEdits" asp-action="DeleteLink" method="post">
-                                                @Html.AntiForgeryToken()
-                                                <input type="hidden" name="id" value="@link.Id" /><input type="hidden" name="revision" value="@link.Revision" /><input type="hidden" name="returnSlug" value="@Model.Slug" />
-                                                <button class="btn btn-danger btn-sm" type="submit">Confirm delete link</button>
-                                            </form>
-                                        </details>
-                                    </details>
+                                            </div>
+                                        </div></div>
+                                    </div>
                                 }
                                 else
                                 {

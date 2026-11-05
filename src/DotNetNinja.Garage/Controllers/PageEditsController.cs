@@ -89,6 +89,28 @@ public sealed class PageEditsController : MvcController<PageEditsController>
         });
 
     [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> ReorderGroupJson(int id, int revision, int position, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _editService.ReorderGroupAsync(UserId, id, revision, position, cancellationToken);
+            return NoContent();
+        }
+        catch (EditValidationException exception)
+        {
+            return BadRequest(new { message = exception.Message });
+        }
+        catch (EditConflictException exception)
+        {
+            return Conflict(new { message = exception.Message });
+        }
+        catch (EditNotFoundException)
+        {
+            return NotFound();
+        }
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
     public Task<IActionResult> DeleteGroup(int id, int revision, string returnSlug, CancellationToken cancellationToken) =>
         ExecuteAsync(returnSlug, $"group-delete-{id}", async () =>
         {

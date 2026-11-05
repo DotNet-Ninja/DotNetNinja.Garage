@@ -165,6 +165,29 @@ public sealed partial class PageEditService(GarageDbContext db) : IPageEditServi
         await transaction.CommitAsync(cancellationToken);
     }
 
+    public async Task ReorderGroupAsync(string userId, int groupId, int revision, int position, CancellationToken cancellationToken)
+    {
+        await using var transaction = await db.Database.BeginTransactionAsync(IsolationLevel.Serializable, cancellationToken);
+        var page = await db.Pages.Include(page => page.Groups)
+            .SingleOrDefaultAsync(page => page.UserId == userId && page.Groups.Any(group => group.Id == groupId), cancellationToken)
+            ?? throw new EditNotFoundException();
+        var groups = page.Groups.OrderBy(group => group.SortIndex).ThenBy(group => group.Id).ToList();
+        var currentIndex = groups.FindIndex(group => group.Id == groupId);
+        CheckRevision(groups[currentIndex].Revision, revision);
+        if (position < 0 || position >= groups.Count)
+            throw new EditValidationException(nameof(position), "Choose a valid group position.");
+        if (position != currentIndex)
+        {
+            var group = groups[currentIndex];
+            groups.RemoveAt(currentIndex);
+            groups.Insert(position, group);
+            NormalizeGroups(groups);
+            page.Revision++;
+            await SaveAsync(cancellationToken);
+        }
+        await transaction.CommitAsync(cancellationToken);
+    }
+
     public async Task DeleteGroupAsync(string userId, int groupId, int revision, CancellationToken cancellationToken)
     {
         await using var transaction = await db.Database.BeginTransactionAsync(IsolationLevel.Serializable, cancellationToken);

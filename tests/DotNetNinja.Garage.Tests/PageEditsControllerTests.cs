@@ -40,6 +40,28 @@ public class PageEditsControllerTests
     }
 
     [Fact]
+    public async Task Group_drag_uses_the_authenticated_owner_and_requested_position()
+    {
+        var edits = new Mock<IPageEditService>();
+        var result = await CreateController(edits.Object).ReorderGroupJson(7, 2, 0, CancellationToken.None);
+
+        Assert.IsType<NoContentResult>(result);
+        edits.Verify(service => service.ReorderGroupAsync("auth0|user-1", 7, 2, 0, It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task Stale_group_drag_returns_conflict()
+    {
+        var edits = new Mock<IPageEditService>();
+        edits.Setup(service => service.ReorderGroupAsync("auth0|user-1", 7, 2, 0, It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new EditConflictException());
+
+        var result = await CreateController(edits.Object).ReorderGroupJson(7, 2, 0, CancellationToken.None);
+
+        Assert.IsType<ConflictObjectResult>(result);
+    }
+
+    [Fact]
     public void Every_edit_action_requires_post_and_antiforgery()
     {
         Assert.Single(typeof(PageEditsController).GetCustomAttributes(typeof(AuthorizeAttribute), false));
