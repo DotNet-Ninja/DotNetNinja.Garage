@@ -197,6 +197,7 @@ body.garage-shell {
 .edit-icon-preview { display: flex; align-items: center; gap: .5rem; color: var(--garage-muted); font-size: .8rem; }
 .edit-icon-preview i { color: #fff; font-size: 1.2rem; }
 .edit-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; margin-top: .8rem; }
+.page-order-actions { display: inline-flex; gap: .45rem; margin-left: auto; }
 .edit-confirm { margin-top: .8rem; color: #d8e0e8; }
 .edit-confirm p { max-width: 28rem; margin: .5rem 0; font-size: .85rem; }
 .edit-panel { max-width: 34rem; margin: 0 0 1rem; padding: 1rem; }
@@ -204,8 +205,9 @@ body.garage-shell {
 .edit-hint { margin: .3rem 0 1rem; color: #d8e0e8; font-size: .85rem; }
 .page-group-heading { display: flex; align-items: start; justify-content: space-between; gap: .5rem; }
 .page-group-heading h2 { margin-bottom: .55rem; }
-.group-actions { margin: 0 0 .6rem; }
-.group-actions .btn { padding: .2rem .45rem; font-size: .75rem; }
+.group-drag-handle { padding: .1rem .2rem; border: 0; border-radius: .3rem; background: transparent; color: var(--garage-muted); cursor: grab; touch-action: none; }
+.group-drag-handle:active { cursor: grabbing; }
+.group-heading-actions { flex-wrap: nowrap; margin-top: 0; }
 .pages-editing .page-group { min-width: 0; }
 .edit-link-row { display: flex; align-items: center; gap: .45rem; min-height: 2rem; }
 .edit-link-row .edit-link-title { min-width: 0; flex: 1; overflow-wrap: anywhere; }
@@ -213,13 +215,13 @@ body.garage-shell {
 .link-drag-handle { padding: .1rem .2rem; border: 0; border-radius: .3rem; background: transparent; color: var(--garage-muted); cursor: grab; touch-action: none; }
 .link-drag-handle:active { cursor: grabbing; }
 body.is-dragging-link, body.is-dragging-link * { cursor: grabbing !important; user-select: none; }
-.link-drag-handle:focus-visible, .page-links a:focus-visible { outline: 2px solid var(--garage-yellow); outline-offset: 2px; }
-.edit-link-controls { margin: .1rem 0 .45rem 1.3rem; padding: .1rem .4rem; font-size: .8rem; }
-.edit-link-controls[open] { padding: .45rem .6rem; }
-.edit-link-controls .edit-actions { margin-top: .3rem; }
+.link-drag-handle:focus-visible, .group-drag-handle:focus-visible, .page-links a:focus-visible { outline: 2px solid var(--garage-yellow); outline-offset: 2px; }
 .edit-add-link { margin-top: .65rem; }
 .add-group-panel { width: fit-content; min-width: min(100%, 18rem); margin-top: 1rem; padding: .8rem 1rem; }
 .page-group.drop-target { box-shadow: inset 0 0 0 2px var(--garage-yellow), 0 1rem 2.5rem rgba(0, 0, 0, .24); }
+.page-group.group-drop-before { box-shadow: inset 4px 0 0 var(--garage-yellow), 0 1rem 2.5rem rgba(0, 0, 0, .24); }
+.page-group.group-drop-after { box-shadow: inset -4px 0 0 var(--garage-yellow), 0 1rem 2.5rem rgba(0, 0, 0, .24); }
+.page-group.drag-source { opacity: .55; }
 .page-links li.drop-before { box-shadow: inset 0 2px 0 var(--garage-yellow); }
 .page-links li.drop-after { box-shadow: inset 0 -2px 0 var(--garage-yellow); }
 .page-links li.drag-source { opacity: .55; }

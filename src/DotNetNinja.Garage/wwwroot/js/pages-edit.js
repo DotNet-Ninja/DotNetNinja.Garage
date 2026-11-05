@@ -2,6 +2,9 @@
   const editor = document.querySelector('.pages-editing[data-move-url]');
   if (!editor) return;
 
+  // Group cards use backdrop-filter, which would confine nested fixed dialogs.
+  editor.querySelectorAll('.garage-delete-dialog').forEach(dialog => editor.append(dialog));
+
   if (editor.dataset.initialDialog) {
     const dialog = document.getElementById(editor.dataset.initialDialog);
     if (dialog) {
@@ -20,6 +23,8 @@
   const colorInput = document.getElementById('edit-link-color');
   const iconPreview = document.getElementById('edit-icon-preview');
   let source = null;
+  let groupSource = null;
+  let groupTarget = null;
   let targetGroup = null;
   let targetLink = null;
   let pointer = null;
@@ -44,10 +49,73 @@
   }
 
   function clearHighlight() {
-    editor.querySelectorAll('.drop-target, .drop-before, .drop-after, .drag-source')
-      .forEach(element => element.classList.remove('drop-target', 'drop-before', 'drop-after', 'drag-source'));
+    editor.querySelectorAll('.drop-target, .drop-before, .drop-after, .drag-source, .group-drop-before, .group-drop-after')
+      .forEach(element => element.classList.remove('drop-target', 'drop-before', 'drop-after', 'drag-source', 'group-drop-before', 'group-drop-after'));
     targetGroup = null;
     targetLink = null;
+    groupTarget = null;
+  }
+
+  function groupDropAfter(target, clientX, clientY) {
+    const bounds = target.getBoundingClientRect();
+    return clientY > bounds.bottom || (clientY >= bounds.top && clientX > bounds.left + bounds.width / 2);
+  }
+
+  function highlightGroup(element, clientX, clientY) {
+    editor.querySelectorAll('.group-drop-before, .group-drop-after')
+      .forEach(item => item.classList.remove('group-drop-before', 'group-drop-after'));
+    groupTarget = element?.closest('[data-group-id]') ?? null;
+    if (!groupTarget || groupTarget === groupSource) {
+      groupTarget = null;
+      return;
+    }
+    groupTarget.classList.add(groupDropAfter(groupTarget, clientX, clientY) ? 'group-drop-after' : 'group-drop-before');
+  }
+
+  async function saveGroupMove(clientX, clientY) {
+    if (!groupSource || !groupTarget || !token || saving) {
+      clearHighlight();
+      groupSource = null;
+      return;
+    }
+    const grid = groupSource.parentElement;
+    const groups = [...grid.querySelectorAll(':scope > [data-group-id]')];
+    const currentIndex = groups.indexOf(groupSource);
+    const siblings = groups.filter(group => group !== groupSource);
+    const position = siblings.indexOf(groupTarget) + (groupDropAfter(groupTarget, clientX, clientY) ? 1 : 0);
+    if (position === currentIndex) {
+      clearHighlight();
+      groupSource = null;
+      return;
+    }
+
+    const form = new FormData();
+    form.set('__RequestVerificationToken', token);
+    form.set('id', groupSource.dataset.groupId);
+    form.set('revision', groupSource.dataset.groupRevision);
+    form.set('position', position.toString());
+    saving = true;
+    editor.classList.add('is-saving');
+    announce('Saving group position.');
+    try {
+      const response = await fetch(editor.dataset.groupMoveUrl, {
+        method: 'POST', body: form, credentials: 'same-origin', headers: { Accept: 'application/json' }
+      });
+      if (!response.ok) {
+        const details = await response.json().catch(() => null);
+        announce(details?.message ?? 'The group could not be moved. Reload and try again.', true);
+        return;
+      }
+      announce('Group moved.');
+      window.location.reload();
+    } catch {
+      announce('The group could not be moved. Check your connection and try again.', true);
+    } finally {
+      saving = false;
+      editor.classList.remove('is-saving');
+      clearHighlight();
+      groupSource = null;
+    }
   }
 
   function highlight(element, clientY) {
@@ -123,6 +191,15 @@
 
   editor.addEventListener('pointerdown', event => {
     if (saving || (event.pointerType === 'mouse' && event.button !== 0)) return;
+    const groupHandle = event.target.closest('[data-group-drag-handle]');
+    if (groupHandle) {
+      groupSource = groupHandle.closest('[data-group-id]');
+      pointer = event.pointerId;
+      groupHandle.setPointerCapture(pointer);
+      groupSource.classList.add('drag-source');
+      document.body.classList.add('is-dragging-link');
+      return;
+    }
     const handle = event.target.closest('[data-drag-handle]');
     if (!handle) return;
     source = handle.closest('li[data-link-id]');
@@ -132,15 +209,20 @@
     document.body.classList.add('is-dragging-link');
   });
   editor.addEventListener('pointermove', event => {
-    if (pointer !== event.pointerId || !source) return;
-    highlight(document.elementFromPoint(event.clientX, event.clientY), event.clientY);
+    if (pointer !== event.pointerId) return;
+    const element = document.elementFromPoint(event.clientX, event.clientY);
+    if (groupSource) highlightGroup(element, event.clientX, event.clientY);
+    else if (source) highlight(element, event.clientY);
   });
   editor.addEventListener('pointerup', event => {
     if (pointer !== event.pointerId) return;
-    highlight(document.elementFromPoint(event.clientX, event.clientY), event.clientY);
+    const element = document.elementFromPoint(event.clientX, event.clientY);
+    if (groupSource) highlightGroup(element, event.clientX, event.clientY);
+    else highlight(element, event.clientY);
     pointer = null;
     document.body.classList.remove('is-dragging-link');
-    void saveMove(event.clientY);
+    if (groupSource) void saveGroupMove(event.clientX, event.clientY);
+    else void saveMove(event.clientY);
   });
   editor.addEventListener('pointercancel', event => {
     if (pointer !== event.pointerId) return;
@@ -148,15 +230,7 @@
     document.body.classList.remove('is-dragging-link');
     clearHighlight();
     source = null;
+    groupSource = null;
   });
 
-  editor.addEventListener('keydown', event => {
-    const handle = event.target.closest('[data-drag-handle]');
-    if (!handle || !['ArrowUp', 'ArrowDown'].includes(event.key)) return;
-    event.preventDefault();
-    const label = event.key === 'ArrowUp' ? 'Move earlier' : 'Move later';
-    const button = [...handle.closest('li[data-link-id]').querySelectorAll('button[type="submit"]')]
-      .find(candidate => candidate.textContent.trim() === label);
-    if (button && !button.disabled) button.form.requestSubmit(button);
-  });
 })();

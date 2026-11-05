@@ -12,6 +12,7 @@ public interface IPageEditService
     Task<LinkGroup> CreateGroupAsync(string userId, GroupCreateInput input, CancellationToken cancellationToken);
     Task<LinkGroup> UpdateGroupAsync(string userId, GroupUpdateInput input, CancellationToken cancellationToken);
     Task MoveGroupAsync(string userId, int groupId, int revision, int direction, CancellationToken cancellationToken);
+    Task ReorderGroupAsync(string userId, int groupId, int revision, int position, CancellationToken cancellationToken);
     Task DeleteGroupAsync(string userId, int groupId, int revision, CancellationToken cancellationToken);
     Task<LinkItem> CreateLinkAsync(string userId, LinkCreateInput input, CancellationToken cancellationToken);
     Task<LinkItem> UpdateLinkAsync(string userId, LinkUpdateInput input, CancellationToken cancellationToken);

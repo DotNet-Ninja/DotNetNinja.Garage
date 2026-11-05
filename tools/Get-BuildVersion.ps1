@@ -13,15 +13,13 @@ if ($LASTEXITCODE -ne 0 -or $tag -notmatch '^v(\d+)\.(\d+)\.(\d+)$') {
     $major = 0
     $minor = 0
     $patch = 0
-    $distance = 0
     $isTaggedHead = $false
 }
 else {
     $major = [int] $Matches[1]
     $minor = [int] $Matches[2]
     $patch = [int] $Matches[3]
-    $distance = [int] (& git @gitArguments rev-list --count "$tag..HEAD")
-    $isTaggedHead = $distance -eq 0
+    $isTaggedHead = (& git @gitArguments rev-list --count "$tag..HEAD") -eq '0'
 }
 
 $dirty = @(& git @gitArguments status --porcelain --untracked-files=normal).Count -gt 0
@@ -30,8 +28,7 @@ if ($isTaggedHead -and -not $dirty) {
 }
 else {
     $nextPatch = $patch + 1
-    $stamp = (Get-Date).ToUniversalTime().ToString('yyyyMMddHHmmss')
-    $version = "$major.$minor.$nextPatch-dev.$distance+build.$stamp"
+    $version = "$major.$minor.$nextPatch"
 }
 
 if ($OutputFile) {
