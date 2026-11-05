@@ -157,7 +157,12 @@ body.garage-shell {
 
 .pages-content { display: block; padding: 2rem clamp(1.25rem, 4vw, 4rem); }
 .pages-content .page-title { margin-bottom: 1.1rem; color: var(--garage-yellow); font-size: clamp(1.8rem, 3vw, 3.1rem); font-weight: 700; line-height: 1.1; letter-spacing: -.03em; }
-.pages-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); align-items: stretch; gap: 1rem; }
+.pages-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, max(17rem, calc((100% - 3rem) / 4))), 1fr));
+  align-items: stretch;
+  gap: 1rem;
+}
 .page-group {
   padding: 1rem;
   border-radius: .8rem;
