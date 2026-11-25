@@ -4,6 +4,7 @@ namespace DotNetNinja.Garage.Services;
 
 public interface IPageEditService
 {
+    Task<int> ImportPagesAsync(string userId, IReadOnlyList<LinkPage> pages, int[] selectedPages, CancellationToken cancellationToken);
     Task<LinkPage> CreatePageAsync(string userId, PageCreateInput input, CancellationToken cancellationToken);
     Task<LinkPage> UpdatePageAsync(string userId, PageUpdateInput input, CancellationToken cancellationToken);
     Task SetDefaultPageAsync(string userId, int pageId, int revision, CancellationToken cancellationToken);
