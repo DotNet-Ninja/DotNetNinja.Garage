@@ -56,6 +56,8 @@ dotnet ef migrations script --idempotent --project src/DotNetNinja.Garage --star
 
 Run that script using an approved database deployment process against the verified database. The startup project requires valid `Auth` and `Databases` configuration while generating the script. The README has local `dotnet ef` commands. A schema rollback must be planned for the specific migration and data; redeploying an older ZIP alone does not undo a database change.
 
+Apply `ExpandBookmarkUrl` before deploying the page import feature. It widens the unindexed `Items.Href` column from `nvarchar(256)` to `nvarchar(2048)` and may take a schema lock. The previous application version can use the wider schema. A schema rollback to `AddEditConcurrency` stops if any URLs exceed the old limit. Preserve those URLs and resolve the affected rows before narrowing the column.
+
 ## Versioning and verification
 
 The latest reachable stable `vMAJOR.MINOR.PATCH` tag is the base version. The workflow examines all first-parent commits since that tag so a failed deployment does not lose a PR's version bump. If any merged PR in that range has a `major` or `breaking` label, it increments major; otherwise `minor` or `feature` increments minor; otherwise it increments patch. A direct push to `main` also increments patch. The `no-version-bump` label currently does not suppress a version, because every successful main deployment gets a distinct version. Concurrent main workflows run in order.

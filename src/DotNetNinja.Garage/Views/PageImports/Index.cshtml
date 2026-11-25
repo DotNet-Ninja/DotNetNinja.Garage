@@ -1,0 +1,46 @@
+@model PageImportViewModel
+@{
+    ViewData[ViewKey.Title] = "Import pages";
+}
+
+<section class="container py-4" aria-labelledby="import-title">
+    <h1 id="import-title">Import pages</h1>
+
+    @if (TempData["PageImportSuccess"] is string success)
+    {
+        <p class="alert alert-success" role="status">@success</p>
+    }
+    @if (Model.Error is not null)
+    {
+        <p class="alert alert-danger" role="alert">@Model.Error</p>
+    }
+
+    @if (Model.Token is null)
+    {
+        <form asp-action="Preview" method="post" enctype="multipart/form-data" class="edit-form">
+            <label for="garage-export">Garage JSON export</label>
+            <input id="garage-export" name="file" type="file" class="form-control" accept=".json,application/json" aria-describedby="export-help" required />
+            <small id="export-help">Maximum file size is 512 KB.</small>
+            <button class="btn btn-primary" type="submit">Preview pages</button>
+        </form>
+    }
+    else
+    {
+        <form asp-action="Import" method="post" class="edit-form">
+            <input type="hidden" name="token" value="@Model.Token" />
+            <fieldset>
+                <legend class="fs-5">Pages to import</legend>
+                @foreach (var option in Model.Pages)
+                {
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" role="switch" name="selectedPages" id="import-page-@option.Index" value="@option.Index" checked="@option.Selected" />
+                        <label for="import-page-@option.Index">@option.Name <small class="d-block">@option.GroupCount groups · @option.BookmarkCount bookmarks</small></label>
+                    </div>
+                }
+            </fieldset>
+            <button class="btn btn-primary" type="submit">Import selected pages</button>
+            <a asp-action="Index">Upload a different file</a>
+        </form>
+    }
+    <a class="d-inline-block mt-3" asp-controller="Account" asp-action="MyAccount">Back to My Account</a>
+</section>

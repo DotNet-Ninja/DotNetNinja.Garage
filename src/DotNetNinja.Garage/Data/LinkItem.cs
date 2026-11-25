@@ -4,6 +4,8 @@ namespace DotNetNinja.Garage.Data;
 
 public class LinkItem
 {
+    public const int MaxHrefLength = 2048;
+
     public int Id { get; set; }
 
     public int LinkGroupId { get; set; }
