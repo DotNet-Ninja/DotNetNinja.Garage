@@ -64,8 +64,8 @@ namespace DotNetNinja.Garage.Data.Migrations
 
                     b.Property<string>("Href")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
 
                     b.Property<string>("Icon")
                         .IsRequired()

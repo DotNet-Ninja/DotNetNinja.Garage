@@ -165,6 +165,12 @@
         {
             var isNewLink = selectedLink is null;
             var linkForm = isNewLink ? $"link-create-{newLinkGroup!.Id}" : $"link-update-{selectedLink!.Id}";
+            var defaultIconColor = selectedLink?.IconColor ?? Colors.White;
+            var iconColor = Posted(linkForm, "IconColor", defaultIconColor).Trim();
+            if (iconColor.Length != 7 || iconColor[0] != '#' || !iconColor.Skip(1).All(Uri.IsHexDigit))
+            {
+                iconColor = defaultIconColor;
+            }
             <div class="modal fade" id="link-editor" tabindex="-1" aria-labelledby="link-editor-title" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered"><div class="modal-content garage-edit-dialog">
                 <div class="modal-header"><h2 class="modal-title fs-5" id="link-editor-title">@(isNewLink ? $"Add link to {newLinkGroup!.Title}" : $"Edit {selectedLink!.Title}")</h2><a class="btn-close" asp-route="page" asp-route-slug="@Model.Slug" asp-route-edit="1" aria-label="Close"></a></div>
@@ -184,11 +190,11 @@
                     <label for="edit-link-text">Title</label>
                     <input id="edit-link-text" class="form-control" name="Text" maxlength="64" required value="@Posted(linkForm, "Text", selectedLink?.Title ?? "")" />
                     <label for="edit-link-href">URL</label>
-                    <input id="edit-link-href" class="form-control" name="Href" type="url" maxlength="256" required value="@Posted(linkForm, "Href", selectedLink?.Href ?? "")" />
+                    <input id="edit-link-href" class="form-control" name="Href" type="url" maxlength="@DotNetNinja.Garage.Data.LinkItem.MaxHrefLength" required value="@Posted(linkForm, "Href", selectedLink?.Href ?? "")" />
                     <label for="edit-link-icon">Icon</label>
                     <input id="edit-link-icon" class="form-control" name="Icon" list="garage-icons" value="@Posted(linkForm, "Icon", selectedLink?.Icon.ToString() ?? "Link45deg")" />
                     <label for="edit-link-color">Icon color</label>
-                    <input id="edit-link-color" class="form-control" name="IconColor" maxlength="16" pattern="#[0-9A-Fa-f]{6}" value="@Posted(linkForm, "IconColor", selectedLink?.IconColor ?? "#FFFFFF")" />
+                    <input id="edit-link-color" class="form-control form-control-color" name="IconColor" type="color" value="@iconColor" />
                     <span class="edit-icon-preview"><i id="edit-icon-preview" class="bi bi-link-45deg" aria-hidden="true"></i> Icon preview</span>
                     <label class="edit-check"><input name="OpenInNewTab" type="checkbox" value="true" checked="@PostedCheck(linkForm, "OpenInNewTab", selectedLink?.OpenInNewTab ?? true)" /> Open in a new tab</label>
                     <div class="edit-actions"><button class="btn btn-primary btn-sm" type="submit">@(isNewLink ? "Add link" : "Save link")</button><a class="btn btn-outline-light btn-sm" asp-route="page" asp-route-slug="@Model.Slug" asp-route-edit="1">Cancel</a></div>

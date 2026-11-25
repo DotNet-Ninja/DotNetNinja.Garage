@@ -27,6 +27,7 @@
                 <button class="btn btn-primary" type="submit"><i class="bi bi-box-arrow-right" aria-hidden="true"></i> Log out</button>
             </form>
             <a class="account-claims-link" asp-controller="Account" asp-action="Claims">View authentication claims</a>
+            <div><a class="account-claims-link" asp-controller="PageImports" asp-action="Index">Import pages</a></div>
             @if (User.IsInRole(Roles.DatabaseManager))
             {
                 <div><a class="account-claims-link" asp-controller="Account" asp-action="Database">Database management</a></div>

@@ -17,18 +17,9 @@ public sealed partial class PageEditService(GarageDbContext db) : IPageEditServi
     public async Task<LinkPage> CreatePageAsync(string userId, PageCreateInput input, CancellationToken cancellationToken)
     {
         var text = RequireText(input.Text, 64, nameof(input.Text));
-        var baseSlug = SlugCharacters().Replace(text.ToLowerInvariant(), "-").Trim('-');
-        if (baseSlug.Length == 0) baseSlug = "page";
-        if (ReservedSlugs.Contains(baseSlug)) baseSlug += "-page";
-        baseSlug = baseSlug[..Math.Min(baseSlug.Length, 120)].TrimEnd('-');
-
         var existingSlugs = await db.Pages.Where(page => page.UserId == userId)
             .Select(page => page.Slug).ToListAsync(cancellationToken);
-        var slug = baseSlug;
-        for (var suffix = 2; existingSlugs.Contains(slug, StringComparer.OrdinalIgnoreCase); suffix++)
-        {
-            slug = $"{baseSlug}-{suffix}";
-        }
+        var slug = AllocateSlug(CreateBaseSlug(text), new HashSet<string>(existingSlugs, StringComparer.OrdinalIgnoreCase));
 
         var nextIndex = await db.Pages.Where(page => page.UserId == userId)
             .Select(page => (int?)page.SortIndex).MaxAsync(cancellationToken) ?? 0;
@@ -334,17 +325,38 @@ public sealed partial class PageEditService(GarageDbContext db) : IPageEditServi
     private static string RequireSlug(string? value)
     {
         var slug = value?.Trim().ToLowerInvariant() ?? string.Empty;
-        if (slug.Length is < 1 or > 128 || !SlugFormat().IsMatch(slug) || ReservedSlugs.Contains(slug))
+        if (!IsAvailableSlugFormat(slug))
             throw new EditValidationException("Slug", "Use up to 128 lowercase letters, numbers, and hyphens. This slug may be reserved.");
+        return slug;
+    }
+
+    private static bool IsAvailableSlugFormat(string slug) =>
+        slug.Length is >= 1 and <= 128 && SlugFormat().IsMatch(slug) && !ReservedSlugs.Contains(slug);
+
+    private static string CreateBaseSlug(string text)
+    {
+        var slug = SlugCharacters().Replace(text.ToLowerInvariant(), "-").Trim('-');
+        if (slug.Length == 0) return "page";
+        return ReservedSlugs.Contains(slug) ? slug + "-page" : slug;
+    }
+
+    private static string AllocateSlug(string baseSlug, HashSet<string> usedSlugs)
+    {
+        var slug = baseSlug;
+        for (var number = 2; !usedSlugs.Add(slug); number++)
+        {
+            var suffix = $"-{number}";
+            slug = baseSlug[..Math.Min(baseSlug.Length, 128 - suffix.Length)].TrimEnd('-') + suffix;
+        }
         return slug;
     }
 
     private static string RequireUrl(string? value)
     {
         var url = value?.Trim() ?? string.Empty;
-        if (url.Length is < 1 or > 256 || !Uri.TryCreate(url, UriKind.Absolute, out var uri)
+        if (url.Length is < 1 or > LinkItem.MaxHrefLength || !Uri.TryCreate(url, UriKind.Absolute, out var uri)
             || (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps) || uri.Host.Length == 0)
-            throw new EditValidationException("Href", "Enter an absolute HTTP or HTTPS URL of at most 256 characters.");
+            throw new EditValidationException("Href", $"Enter an absolute HTTP or HTTPS URL of at most {LinkItem.MaxHrefLength} characters.");
         return url;
     }
 
